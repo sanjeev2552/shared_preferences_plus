@@ -1,0 +1,32 @@
+name: shared_preferences_plus
+description: "A new Flutter plugin project."
+version: 0.0.1
+homepage:
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: ^3.11.1
+  flutter: ">=3.7.0"
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: shared_preferences_plus_android
+      web:
+        default_package: shared_preferences_plus_web
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences_plus_android:
+    path: ../shared_preferences_plus_android
+  shared_preferences_plus_web:
+    path: ../shared_preferences_plus_web
+  shared_preferences_plus_platform_interface:
+    path: ../shared_preferences_plus_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
