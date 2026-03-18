@@ -11,6 +11,7 @@ A Flutter plugin for reading and writing key-value pairs to persistent storage w
 | [shared_preferences_plus](./shared_preferences_plus/) | App-facing package that developers depend on |
 | [shared_preferences_plus_platform_interface](./shared_preferences_plus_platform_interface/) | Common platform interface for platform implementations |
 | [shared_preferences_plus_android](./shared_preferences_plus_android/) | Android implementation |
+| [shared_preferences_plus_foundation](./shared_preferences_plus_foundation/) | iOS and macOS implementation |
 | [shared_preferences_plus_web](./shared_preferences_plus_web/) | Web implementation |
 
 ## Platform Support
@@ -18,9 +19,9 @@ A Flutter plugin for reading and writing key-value pairs to persistent storage w
 | Platform | Status | Storage Backend |
 | --- | --- | --- |
 | Android | ✅ | SharedPreferences |
+| iOS | ✅ | NSUserDefaults |
+| macOS | ✅ | NSUserDefaults |
 | Web | ✅ | localStorage |
-| iOS | 🚧 | — |
-| macOS | 🚧 | — |
 | Linux | 🚧 | — |
 | Windows | 🚧 | — |
 

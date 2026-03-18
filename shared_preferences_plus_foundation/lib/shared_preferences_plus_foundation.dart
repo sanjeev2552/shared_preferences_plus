@@ -1,0 +1,1 @@
+export 'src/shared_preferences_plus_foundation_platform_interface.dart';

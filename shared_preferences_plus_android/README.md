@@ -24,4 +24,5 @@ dependencies:
 
 - [shared_preferences_plus](../shared_preferences_plus/) — App-facing package
 - [shared_preferences_plus_platform_interface](../shared_preferences_plus_platform_interface/) — Platform interface
+- [shared_preferences_plus_foundation](../shared_preferences_plus_foundation/) — iOS and macOS implementation
 - [shared_preferences_plus_web](../shared_preferences_plus_web/) — Web implementation

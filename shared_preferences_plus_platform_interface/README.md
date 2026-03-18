@@ -43,4 +43,5 @@ The `SharedPreferencesPlusOptions` class provides configuration for container-ba
 
 - [shared_preferences_plus](../shared_preferences_plus/) — App-facing package
 - [shared_preferences_plus_android](../shared_preferences_plus_android/) — Android implementation
+- [shared_preferences_plus_foundation](../shared_preferences_plus_foundation/) — iOS and macOS implementation
 - [shared_preferences_plus_web](../shared_preferences_plus_web/) — Web implementation

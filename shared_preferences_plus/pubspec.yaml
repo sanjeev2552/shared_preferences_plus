@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   shared_preferences_plus_android:
     path: ../shared_preferences_plus_android
+  shared_preferences_plus_foundation:
+    path: ../shared_preferences_plus_foundation
   shared_preferences_plus_web:
     path: ../shared_preferences_plus_web
   shared_preferences_plus_platform_interface:

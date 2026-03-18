@@ -1,0 +1,34 @@
+name: shared_preferences_plus_foundation
+description: "A new Flutter plugin project."
+version: 0.0.1
+homepage:
+publish_to: none # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: ^3.11.1
+  flutter: ">=3.3.0"
+
+flutter:
+  plugin:
+    implements: shared_preferences_plus
+    platforms:
+      ios:
+        pluginClass: SharedPreferencesPlusFoundationPlugin
+        dartPluginClass: SharedPreferencesPlusFoundation
+        sharedDarwinSource: true
+      macos:
+        pluginClass: SharedPreferencesPlusFoundationPlugin
+        dartPluginClass: SharedPreferencesPlusFoundation
+        sharedDarwinSource: true
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences_plus_platform_interface:
+    path: ../shared_preferences_plus_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  pigeon: ^26.2.3
