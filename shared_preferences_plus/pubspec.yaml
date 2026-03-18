@@ -13,8 +13,16 @@ flutter:
     platforms:
       android:
         default_package: shared_preferences_plus_android
+      ios:
+        default_package: shared_preferences_plus_foundation
+      linux:
+        default_package: shared_preferences_plus_linux
+      macos:
+        default_package: shared_preferences_plus_foundation
       web:
         default_package: shared_preferences_plus_web
+      windows:
+        default_package: shared_preferences_plus_windows
 
 dependencies:
   flutter:
@@ -23,8 +31,12 @@ dependencies:
     path: ../shared_preferences_plus_android
   shared_preferences_plus_foundation:
     path: ../shared_preferences_plus_foundation
+  shared_preferences_plus_linux:
+    path: ../shared_preferences_plus_linux
   shared_preferences_plus_web:
     path: ../shared_preferences_plus_web
+  shared_preferences_plus_windows:
+    path: ../shared_preferences_plus_windows
   shared_preferences_plus_platform_interface:
     path: ../shared_preferences_plus_platform_interface
 

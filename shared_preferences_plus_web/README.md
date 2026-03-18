@@ -26,3 +26,5 @@ dependencies:
 - [shared_preferences_plus_platform_interface](../shared_preferences_plus_platform_interface/) — Platform interface
 - [shared_preferences_plus_android](../shared_preferences_plus_android/) — Android implementation
 - [shared_preferences_plus_foundation](../shared_preferences_plus_foundation/) — iOS and macOS implementation
+- [shared_preferences_plus_linux](../shared_preferences_plus_linux/) — Linux implementation
+- [shared_preferences_plus_windows](../shared_preferences_plus_windows/) — Windows implementation

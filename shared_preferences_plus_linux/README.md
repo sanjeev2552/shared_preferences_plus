@@ -1,6 +1,6 @@
-# shared_preferences_plus_android
+# shared_preferences_plus_linux
 
-The Android implementation of the `shared_preferences_plus` plugin.
+The Linux implementation of the `shared_preferences_plus` plugin.
 
 ## Usage
 
@@ -16,15 +16,16 @@ dependencies:
 
 ## Implementation Details
 
-- Uses Android's native `SharedPreferences` API for persistent key-value storage.
-- Communicates with native code via [Pigeon](https://pub.dev/packages/pigeon) for type-safe platform channels.
+- Uses the local file system to store data persistently as JSON files (`<container_name>.json`).
+- Defers to `path_provider_linux` to safely retrieve XDG base directories.
+- Built strictly in Dart (via FFI through path_provider), removing the need for compiling C++ plugins.
 - Supports named containers through `SharedPreferencesPlusOptions` for isolated namespaces.
 
 ## Related Packages
 
 - [shared_preferences_plus](../shared_preferences_plus/) — App-facing package
 - [shared_preferences_plus_platform_interface](../shared_preferences_plus_platform_interface/) — Platform interface
+- [shared_preferences_plus_android](../shared_preferences_plus_android/) — Android implementation
 - [shared_preferences_plus_foundation](../shared_preferences_plus_foundation/) — iOS and macOS implementation
-- [shared_preferences_plus_linux](../shared_preferences_plus_linux/) — Linux implementation
 - [shared_preferences_plus_web](../shared_preferences_plus_web/) — Web implementation
 - [shared_preferences_plus_windows](../shared_preferences_plus_windows/) — Windows implementation

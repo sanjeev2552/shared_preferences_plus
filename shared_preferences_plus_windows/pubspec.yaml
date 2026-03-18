@@ -1,0 +1,30 @@
+name: shared_preferences_plus_windows
+description: "A new Flutter plugin project."
+version: 0.0.1
+homepage:
+publish_to: none
+
+environment:
+  sdk: ^3.11.1
+  flutter: ">=3.3.0"
+
+flutter:
+  plugin:
+    implements: shared_preferences_plus
+    platforms:
+      windows:
+        dartPluginClass: SharedPreferencesPlusWindows
+
+dependencies:
+  file: ^7.0.1
+  flutter:
+    sdk: flutter
+  path: ^1.9.1
+  path_provider_windows: ^2.3.0
+  shared_preferences_plus_platform_interface:
+    path: ../shared_preferences_plus_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
