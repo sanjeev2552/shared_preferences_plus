@@ -4,7 +4,7 @@ A Flutter plugin for reading and writing key-value pairs to persistent storage w
 
 ## Features
 
-- 🔑 **Simple key-value storage** — Read and write string data with a clean, intuitive API.
+- 🔑 **Simple key-value storage** — Read and write standard data types (`String`, `int`, `double`, `bool`, `List<String>`) with a clean, intuitive API.
 - 📦 **Container support** — Create isolated namespaces using named containers to keep data organized and separated.
 - 🌐 **Cross-platform** — Works on Android (SharedPreferences), iOS & macOS (NSUserDefaults), Web (localStorage), and Windows & Linux (local JSON file).
 
@@ -27,11 +27,15 @@ import 'package:shared_preferences_plus/shared_preferences_plus.dart';
 
 final prefs = SharedPreferencesPlus();
 
-// Write a string value
+// Write values
 await prefs.setString('key', 'value');
+await prefs.setInt('counter', 10);
+await prefs.setBool('is_active', true);
 
-// Read a string value
+// Read values
 final value = await prefs.getString('key'); // 'value'
+final counter = await prefs.getInt('counter'); // 10
+final isActive = await prefs.getBool('is_active'); // true
 ```
 
 ### Named Containers

@@ -166,4 +166,236 @@ class SharedPreferencesPlusApi {
     ;
     return pigeonVar_replyValue as String?;
   }
+
+  Future<void> setInt(String key, int value, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setInt$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, value, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<int?> getInt(String key, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getInt$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+    return pigeonVar_replyValue as int?;
+  }
+
+  Future<void> setDouble(String key, double value, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setDouble$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, value, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<double?> getDouble(String key, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getDouble$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+    return (pigeonVar_replyValue is double) ? pigeonVar_replyValue : null;
+  }
+
+  Future<void> setBool(String key, bool value, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setBool$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, value, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<bool?> getBool(String key, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getBool$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+    return (pigeonVar_replyValue is bool) ? pigeonVar_replyValue : null;
+  }
+
+  Future<void> setStringList(String key, List<String> value, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setStringList$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, value, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<List<String>?> getStringList(String key, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getStringList$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+    if (pigeonVar_replyValue is List) {
+      if (pigeonVar_replyValue.every((Object? item) => item is String)) {
+        return pigeonVar_replyValue.cast<String>();
+      }
+    }
+    return null;
+  }
+
+  Future<void> remove(String key, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.remove$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<void> clear(SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.clear$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<bool> containsKey(String key, SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.containsKey$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[key, options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
+    return pigeonVar_replyValue as bool;
+  }
+
+  Future<List<String>> getKeys(SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getKeys$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
+    if (pigeonVar_replyValue is List) {
+      if (pigeonVar_replyValue.every((Object? item) => item is String)) {
+        return pigeonVar_replyValue.cast<String>();
+      }
+    }
+    return <String>[];
+  }
 }

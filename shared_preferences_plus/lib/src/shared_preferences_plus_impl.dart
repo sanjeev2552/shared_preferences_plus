@@ -13,18 +13,59 @@ class SharedPreferencesPlus {
   final SharedPreferencesPlusOptions options;
   SharedPreferencesPlus({this.options = const SharedPreferencesPlusOptions()});
 
-  // static SharedPreferencesPlus init({
-  //   SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  // }) {
-  //   _platform.init(options: options);
-  //   return SharedPreferencesPlus();
-  // }
-
   Future<void> setString(String key, String value) {
     return _platform.setString(key, value, options: options);
   }
 
   Future<String?> getString(String key) {
     return _platform.getString(key, options: options);
+  }
+
+  Future<void> setInt(String key, int value) {
+    return _platform.setInt(key, value, options: options);
+  }
+
+  Future<int?> getInt(String key) {
+    return _platform.getInt(key, options: options);
+  }
+
+  Future<void> setDouble(String key, double value) {
+    return _platform.setDouble(key, value, options: options);
+  }
+
+  Future<double?> getDouble(String key) {
+    return _platform.getDouble(key, options: options);
+  }
+
+  Future<void> setBool(String key, bool value) {
+    return _platform.setBool(key, value, options: options);
+  }
+
+  Future<bool?> getBool(String key) {
+    return _platform.getBool(key, options: options);
+  }
+
+  Future<void> setStringList(String key, List<String> value) {
+    return _platform.setStringList(key, value, options: options);
+  }
+
+  Future<List<String>?> getStringList(String key) {
+    return _platform.getStringList(key, options: options);
+  }
+
+  Future<void> remove(String key) {
+    return _platform.remove(key, options: options);
+  }
+
+  Future<void> clear() {
+    return _platform.clear(options: options);
+  }
+
+  Future<bool> containsKey(String key) {
+    return _platform.containsKey(key, options: options);
+  }
+
+  Future<Set<String>> getKeys() {
+    return _platform.getKeys(options: options);
   }
 }

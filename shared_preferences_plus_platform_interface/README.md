@@ -28,6 +28,8 @@ class SharedPreferencesPlusMacOS extends SharedPreferencesPlusPlatform {
   }) {
     // macOS-specific implementation
   }
+
+  // ... implement other methods (setInt, getBool, etc.)
 }
 ```
 

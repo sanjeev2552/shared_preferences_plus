@@ -31,4 +31,105 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     debugPrint('Setting string: key=$key, value=$value, options=${options.name}');
     return _api.setString(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
   }
+
+  @override
+  Future<void> setInt(
+    String key,
+    int value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.setInt(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<int?> getInt(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    final value = await _api.getInt(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return value;
+  }
+
+  @override
+  Future<void> setDouble(
+    String key,
+    double value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.setDouble(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<double?> getDouble(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.getDouble(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<void> setBool(
+    String key,
+    bool value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.setBool(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<bool?> getBool(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.getBool(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<void> setStringList(
+    String key,
+    List<String> value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.setStringList(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<List<String>?> getStringList(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    final value = await _api.getStringList(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return value;
+  }
+
+  @override
+  Future<void> remove(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.remove(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<void> clear({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.clear(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<bool> containsKey(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return _api.containsKey(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+  }
+
+  @override
+  Future<Set<String>> getKeys({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    final keys = await _api.getKeys(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return keys.toSet();
+  }
 }
