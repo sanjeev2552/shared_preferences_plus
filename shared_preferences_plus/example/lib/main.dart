@@ -20,11 +20,6 @@ class _MyAppState extends State<MyApp> {
     _other = SharedPreferencesPlus(options: const SharedPreferencesPlusOptions(name: 'other'));
     _main = SharedPreferencesPlus(options: const SharedPreferencesPlusOptions(name: 'main'));
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      debugPrint(
-        'SharedPreferencesPlusPlatform: ${SharedPreferencesPlusPlatform.instance.runtimeType}',
-      );
-    });
   }
 
   @override

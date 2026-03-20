@@ -26,19 +26,61 @@ abstract class SharedPreferencesPlusPlatform extends PlatformInterface {
   }
 
   // Methods
-  Future<void> setString(String key, String value, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<String?> getString(String key, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<void> setInt(String key, int value, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<int?> getInt(String key, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<void> setDouble(String key, double value, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<double?> getDouble(String key, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<void> setBool(String key, bool value, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<bool?> getBool(String key, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<void> setStringList(String key, List<String> value, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<List<String>?> getStringList(String key, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<void> remove(String key, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
+  Future<void> setString(
+    String key,
+    String value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<String?> getString(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<void> setInt(
+    String key,
+    int value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<int?> getInt(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<void> setDouble(
+    String key,
+    double value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<double?> getDouble(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<void> setBool(
+    String key,
+    bool value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<bool?> getBool(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<void> setStringList(
+    String key,
+    List<String> value, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<List<String>?> getStringList(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<void> remove(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
   Future<void> clear({SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<bool> containsKey(String key, {SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  Future<Set<String>> getKeys({SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()});
-  
+  Future<bool> containsKey(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
+  Future<Set<String>> getKeys({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
 }
