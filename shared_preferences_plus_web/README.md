@@ -10,7 +10,7 @@ This package is [endorsed](https://dart.dev/tools/pub/dependencies#endorsed-pack
 dependencies:
   shared_preferences_plus:
     git:
-      url: https://github.com/<owner>/shared_preferences_plus.git
+      url: https://github.com/sanjeev2552/shared_preferences_plus.git
       path: shared_preferences_plus
 ```
 
@@ -19,6 +19,7 @@ dependencies:
 - Uses the browser's `localStorage` API for persistent key-value storage.
 - Data is stored as JSON-encoded maps, keyed by the container name.
 - Supports named containers through `SharedPreferencesPlusOptions` for isolated namespaces.
+- Supports retrieving all preferences with the `getAll` method.
 
 ## Related Packages
 

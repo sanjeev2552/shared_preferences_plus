@@ -10,7 +10,7 @@ This package is [endorsed](https://dart.dev/tools/pub/dependencies#endorsed-pack
 dependencies:
   shared_preferences_plus:
     git:
-      url: https://github.com/<owner>/shared_preferences_plus.git
+      url: https://github.com/sanjeev2552/shared_preferences_plus.git
       path: shared_preferences_plus
 ```
 
@@ -20,6 +20,7 @@ dependencies:
 - Defers to `path_provider_windows` to securely resolve the application's support directory (`%APPDATA%`).
 - Evaluates entirely in Dart using Windows API through FFI, bypassing the need for C++ integration.
 - Supports named containers through `SharedPreferencesPlusOptions` for isolated namespaces.
+- Supports retrieving all preferences with the `getAll` method.
 
 ## Related Packages
 

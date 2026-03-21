@@ -10,7 +10,7 @@ This package is [endorsed](https://dart.dev/tools/pub/dependencies#endorsed-pack
 dependencies:
   shared_preferences_plus:
     git:
-      url: https://github.com/<owner>/shared_preferences_plus.git
+      url: https://github.com/sanjeev2552/shared_preferences_plus.git
       path: shared_preferences_plus
 ```
 
@@ -20,6 +20,7 @@ dependencies:
 - Shares a single Darwin source implementation across both iOS and macOS.
 - Communicates with native code via [Pigeon](https://pub.dev/packages/pigeon) for type-safe platform channels.
 - Supports named containers through `SharedPreferencesPlusOptions` for isolated namespaces.
+- Supports retrieving all preferences with the `getAll` method.
 
 ## Related Packages
 

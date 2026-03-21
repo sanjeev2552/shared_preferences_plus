@@ -29,6 +29,13 @@ class SharedPreferencesPlusMacOS extends SharedPreferencesPlusPlatform {
     // macOS-specific implementation
   }
 
+  @override
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    // macOS-specific implementation
+  }
+
   // ... implement other methods (setInt, getBool, etc.)
 }
 ```
