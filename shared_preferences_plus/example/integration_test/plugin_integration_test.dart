@@ -1,24 +1,35 @@
-// // This is a basic Flutter integration test.
-// //
-// // Since integration tests run in a full Flutter application, they can interact
-// // with the host side of a plugin implementation, unlike Dart unit tests.
-// //
-// // For more information about Flutter integration tests, please see
-// // https://flutter.dev/to/integration-testing
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:shared_preferences_plus/shared_preferences_plus.dart';
 
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:integration_test/integration_test.dart';
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-// import 'package:shared_preferences_plus/shared_preferences_plus.dart';
+  testWidgets('shared preferences integration flow', (WidgetTester tester) async {
+    final prefs = await SharedPreferencesPlus.getInstance(
+      options: const SharedPreferencesPlusOptions(name: 'integration_test'),
+    );
 
-// void main() {
-//   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+    await prefs.clear();
+    await prefs.setString('string_key', 'value');
+    expect(prefs.getString('string_key'), 'value');
 
-//   testWidgets('getPlatformVersion test', (WidgetTester tester) async {
-//     final SharedPreferencesPlus plugin = SharedPreferencesPlus();
-//     final String? version = await plugin.getPlatformVersion();
-//     // The version string depends on the host platform running the test, so
-//     // just assert that some non-empty string is returned.
-//     expect(version?.isNotEmpty, true);
-//   });
-// }
+    await prefs.remove('string_key');
+    expect(prefs.getString('string_key'), isNull);
+
+    await prefs.setInt('int_key', 7);
+    expect(prefs.getInt('int_key'), 7);
+
+    await prefs.setBool('bool_key', true);
+    expect(prefs.getBool('bool_key'), true);
+
+    await prefs.setStringList('list_key', <String>['a', 'b']);
+    expect(prefs.getStringList('list_key'), <String>['a', 'b']);
+
+    await prefs.reload();
+    final all = prefs.getAll();
+    expect(all.containsKey('int_key'), isTrue);
+    expect(all.containsKey('bool_key'), isTrue);
+    expect(all.containsKey('list_key'), isTrue);
+  });
+}

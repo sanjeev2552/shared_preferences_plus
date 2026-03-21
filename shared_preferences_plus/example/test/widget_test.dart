@@ -1,27 +1,30 @@
-// // This is a basic Flutter widget test.
-// //
-// // To perform an interaction with a widget in your test, use the WidgetTester
-// // utility in the flutter_test package. For example, you can send tap and scroll
-// // gestures. You can also use WidgetTester to find child widgets in the widget
-// // tree, read text, and verify that the values of widget properties are correct.
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences_plus/shared_preferences_plus.dart';
+import 'package:shared_preferences_plus_example/main.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
+void main() {
+  testWidgets('example app renders and updates main value', (WidgetTester tester) async {
+    SharedPreferencesPlus.setMockInitialValues(
+      <String, Object?>{},
+      options: const SharedPreferencesPlusOptions(name: 'main'),
+    );
+    SharedPreferencesPlus.setMockInitialValues(
+      <String, Object?>{},
+      options: const SharedPreferencesPlusOptions(name: 'other'),
+    );
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
-// import 'package:shared_preferences_plus_example/main.dart';
+    expect(find.textContaining('Main container:'), findsOneWidget);
+    expect(find.textContaining('Other container:'), findsOneWidget);
 
-// void main() {
-//   testWidgets('Verify Platform version', (WidgetTester tester) async {
-//     // Build our app and trigger a frame.
-//     await tester.pumpWidget(const MyApp());
+    final setMainButton = find.widgetWithText(ElevatedButton, 'Set Main String');
+    expect(setMainButton, findsOneWidget);
 
-//     // Verify that platform version is retrieved.
-//     expect(
-//       find.byWidgetPredicate(
-//         (Widget widget) =>
-//             widget is Text && widget.data!.startsWith('Running on:'),
-//       ),
-//       findsOneWidget,
-//     );
-//   });
-// }
+    await tester.tap(setMainButton);
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('key_main: value_main'), findsOneWidget);
+  });
+}
