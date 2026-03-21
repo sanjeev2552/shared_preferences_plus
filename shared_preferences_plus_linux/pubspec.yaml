@@ -1,8 +1,9 @@
 name: shared_preferences_plus_linux
-description: "A new Flutter plugin project."
+description: "Linux implementation of shared_preferences_plus."
 version: 1.0.0
-homepage:
-publish_to: none
+homepage: https://github.com/sanjeev2552/shared_preferences_plus
+repository: https://github.com/sanjeev2552/shared_preferences_plus
+issue_tracker: https://github.com/sanjeev2552/shared_preferences_plus/issues
 
 environment:
   sdk: ^3.11.1
@@ -21,8 +22,7 @@ dependencies:
     sdk: flutter
   path: ^1.9.1
   path_provider_linux: ^2.2.1
-  shared_preferences_plus_platform_interface:
-    path: ../shared_preferences_plus_platform_interface
+  shared_preferences_plus_platform_interface: ^1.0.0
 
 dev_dependencies:
   flutter_test:

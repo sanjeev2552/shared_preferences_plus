@@ -1,7 +1,9 @@
 name: shared_preferences_plus_platform_interface
-description: "A new Flutter plugin project."
+description: "Platform interface for shared_preferences_plus."
 version: 1.0.0
-homepage:
+homepage: https://github.com/sanjeev2552/shared_preferences_plus
+repository: https://github.com/sanjeev2552/shared_preferences_plus
+issue_tracker: https://github.com/sanjeev2552/shared_preferences_plus/issues
 
 environment:
   sdk: ^3.11.1

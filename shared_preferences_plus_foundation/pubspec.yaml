@@ -1,8 +1,9 @@
 name: shared_preferences_plus_foundation
-description: "A new Flutter plugin project."
+description: "iOS and macOS implementation of shared_preferences_plus."
 version: 1.0.0
-homepage:
-publish_to: none # Remove this line if you wish to publish to pub.dev
+homepage: https://github.com/sanjeev2552/shared_preferences_plus
+repository: https://github.com/sanjeev2552/shared_preferences_plus
+issue_tracker: https://github.com/sanjeev2552/shared_preferences_plus/issues
 
 environment:
   sdk: ^3.11.1
@@ -24,8 +25,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences_plus_platform_interface:
-    path: ../shared_preferences_plus_platform_interface
+  shared_preferences_plus_platform_interface: ^1.0.0
 
 dev_dependencies:
   flutter_test:
