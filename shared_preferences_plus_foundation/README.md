@@ -8,10 +8,7 @@ This package is [endorsed](https://dart.dev/tools/pub/dependencies#endorsed-pack
 
 ```yaml
 dependencies:
-  shared_preferences_plus:
-    git:
-      url: https://github.com/sanjeev2552/shared_preferences_plus.git
-      path: shared_preferences_plus
+  shared_preferences_plus: ^1.0.0
 ```
 
 ## Implementation Details

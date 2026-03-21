@@ -6,17 +6,13 @@ A Flutter plugin for reading and writing key-value pairs to persistent storage w
 
 - 🔑 **Simple key-value storage** — Read and write standard data types (`String`, `int`, `double`, `bool`, `List<String>`) with a clean, intuitive API.
 - 📦 **Container support** — Create isolated namespaces using named containers to keep data organized and separated.
-- 🔄 **Retrieve all preferences** — Use the `getAll` method to retrieve all stored preferences at once.
 - 🌐 **Cross-platform** — Works on Android (SharedPreferences), iOS & macOS (NSUserDefaults), Web (localStorage), and Windows & Linux (local JSON file).
 
 ## Installation
 
 ```yaml
 dependencies:
-  shared_preferences_plus:
-    git:
-      url: https://github.com/sanjeev2552/shared_preferences_plus.git
-      path: shared_preferences_plus
+  shared_preferences_plus: ^1.0.0
 ```
 
 ## Usage
@@ -67,26 +63,6 @@ final appTheme = appPrefs.getString('theme');   // 'v2'
 ```
 
 > If no `name` is provided, the default container name `SharedPreferencesPlus` is used.
-
-## Supported Platforms
-
-| Platform | Status |
-| --- | --- |
-| [Android](../shared_preferences_plus_android/) | ✅ |
-| [iOS](../shared_preferences_plus_foundation/) | ✅ |
-| [Linux](../shared_preferences_plus_linux/) | ✅ |
-| [macOS](../shared_preferences_plus_foundation/) | ✅ |
-| [Web](../shared_preferences_plus_web/) | ✅ |
-| [Windows](../shared_preferences_plus_windows/) | ✅ |
-
-## Related Packages
-
-- [shared_preferences_plus_platform_interface](../shared_preferences_plus_platform_interface/) — Platform interface
-- [shared_preferences_plus_android](../shared_preferences_plus_android/) — Android implementation
-- [shared_preferences_plus_foundation](../shared_preferences_plus_foundation/) — iOS and macOS implementation
-- [shared_preferences_plus_linux](../shared_preferences_plus_linux/) — Linux implementation
-- [shared_preferences_plus_web](../shared_preferences_plus_web/) — Web implementation
-- [shared_preferences_plus_windows](../shared_preferences_plus_windows/) — Windows implementation
 
 ## Support
 
