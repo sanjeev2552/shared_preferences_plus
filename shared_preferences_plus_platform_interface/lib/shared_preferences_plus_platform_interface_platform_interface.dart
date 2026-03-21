@@ -83,4 +83,7 @@ abstract class SharedPreferencesPlusPlatform extends PlatformInterface {
   Future<Set<String>> getKeys({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   });
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  });
 }

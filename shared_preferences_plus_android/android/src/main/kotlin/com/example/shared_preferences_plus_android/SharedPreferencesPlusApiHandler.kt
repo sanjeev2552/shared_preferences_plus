@@ -11,6 +11,14 @@ class SharedPreferencesPlusApiHandler(private val context: Context) : SharedPref
         private const val stringSeparator = "/0001u"
     }
 
+    private fun decodeStringList(value: String): List<String>? {
+        return if (value.contains(stringSeparator)) {
+            value.split(stringSeparator)
+        } else {
+            null
+        }
+    }
+
     private fun getPreferences(options: SharedPreferencesPlusPigeonOptions): SharedPreferences {
         return context.getSharedPreferences(options.name, Context.MODE_PRIVATE)
     }
@@ -168,5 +176,31 @@ class SharedPreferencesPlusApiHandler(private val context: Context) : SharedPref
 
     override fun getKeys(options: SharedPreferencesPlusPigeonOptions): List<String> {
         return getPreferences(options).all.keys.toList()
+    }
+
+    override fun getAll(options: SharedPreferencesPlusPigeonOptions): Map<String, Any?> {
+        val prefs = getPreferences(options)
+        val all = prefs.all
+        val result = mutableMapOf<String, Any?>()
+        for ((key, value) in all) {
+            when (value) {
+                null -> {}
+                is String -> {
+                    val decoded = decodeStringList(value)
+                    result[key] = decoded ?: value
+                }
+                is Int -> result[key] = value.toLong()
+                is Long -> result[key] = value
+                is Float -> result[key] = value.toDouble()
+                is Boolean -> result[key] = value
+                is Set<*> -> {
+                    val strings = value.filterIsInstance<String>()
+                    if (strings.size == value.size) {
+                        result[key] = strings
+                    }
+                }
+            }
+        }
+        return result
     }
 }

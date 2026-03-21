@@ -22,10 +22,13 @@ dependencies:
 
 ### Basic
 
+Call `SharedPreferencesPlus.load()` before any reads to initialize the in-memory cache.
+Reads are synchronous and will throw `StateError` if the cache has not been loaded.
+
 ```dart
 import 'package:shared_preferences_plus/shared_preferences_plus.dart';
 
-final prefs = SharedPreferencesPlus();
+final prefs = await SharedPreferencesPlus.load();
 
 // Write values
 await prefs.setString('key', 'value');
@@ -33,9 +36,9 @@ await prefs.setInt('counter', 10);
 await prefs.setBool('is_active', true);
 
 // Read values
-final value = await prefs.getString('key'); // 'value'
-final counter = await prefs.getInt('counter'); // 10
-final isActive = await prefs.getBool('is_active'); // true
+final value = prefs.getString('key'); // 'value'
+final counter = prefs.getInt('counter'); // 10
+final isActive = prefs.getBool('is_active'); // true
 ```
 
 ### Named Containers
@@ -43,11 +46,11 @@ final isActive = await prefs.getBool('is_active'); // true
 Use `SharedPreferencesPlusOptions` to create isolated namespaces:
 
 ```dart
-final userPrefs = SharedPreferencesPlus(
+final userPrefs = await SharedPreferencesPlus.load(
   options: SharedPreferencesPlusOptions(name: 'user_settings'),
 );
 
-final appPrefs = SharedPreferencesPlus(
+final appPrefs = await SharedPreferencesPlus.load(
   options: SharedPreferencesPlusOptions(name: 'app_config'),
 );
 
@@ -55,8 +58,8 @@ final appPrefs = SharedPreferencesPlus(
 await userPrefs.setString('theme', 'dark');
 await appPrefs.setString('theme', 'v2');
 
-final userTheme = await userPrefs.getString('theme'); // 'dark'
-final appTheme = await appPrefs.getString('theme');   // 'v2'
+final userTheme = userPrefs.getString('theme'); // 'dark'
+final appTheme = appPrefs.getString('theme');   // 'v2'
 ```
 
 > If no `name` is provided, the default container name `SharedPreferencesPlus` is used.

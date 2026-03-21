@@ -29,7 +29,7 @@ void main() {
   late FakeSharedPreferencesPlusPlatform fakePlatform;
   late SharedPreferencesPlus prefs;
 
-  setUp(() {
+  setUp(() async {
     fakePlatform = FakeSharedPreferencesPlusPlatform(
       initialData: {
         stringKey: defaultStringValue,
@@ -40,37 +40,25 @@ void main() {
       },
     );
     SharedPreferencesPlusPlatform.instance = fakePlatform;
-    prefs = SharedPreferencesPlus();
+    prefs = await SharedPreferencesPlus.getInstance();
   });
 
   tearDown(() {
     SharedPreferencesPlusPlatform.instance = initialPlatform;
+    SharedPreferencesPlus.clearCache();
   });
 
-  test("reading value from shared preferences", () async {
-    expect(await prefs.getString(stringKey), defaultStringValue);
-    expect(await prefs.getInt(intKey), defaultIntValue);
-    expect(await prefs.getDouble(doubleKey), defaultDoubleValue);
-    expect(await prefs.getBool(boolKey), defaultBoolValue);
-    expect(await prefs.getStringList(stringListKey), defaultStringListValue);
+  test("reading value from shared preferences", () {
+    expect(prefs.getString(stringKey), defaultStringValue);
+    expect(prefs.getInt(intKey), defaultIntValue);
+    expect(prefs.getDouble(doubleKey), defaultDoubleValue);
+    expect(prefs.getBool(boolKey), defaultBoolValue);
+    expect(prefs.getStringList(stringListKey), defaultStringListValue);
 
     expect(
       fakePlatform.methodCalls,
       containsAllInOrder(<Matcher>[
-        isMethodCall(
-          'getString',
-          arguments: {'key': stringKey, 'options': 'SharedPreferencesPlus'},
-        ),
-        isMethodCall('getInt', arguments: {'key': intKey, 'options': 'SharedPreferencesPlus'}),
-        isMethodCall(
-          'getDouble',
-          arguments: {'key': doubleKey, 'options': 'SharedPreferencesPlus'},
-        ),
-        isMethodCall('getBool', arguments: {'key': boolKey, 'options': 'SharedPreferencesPlus'}),
-        isMethodCall(
-          'getStringList',
-          arguments: {'key': stringListKey, 'options': 'SharedPreferencesPlus'},
-        ),
+        isMethodCall('getAll', arguments: {'options': 'SharedPreferencesPlus'}),
       ]),
     );
   });
@@ -123,21 +111,39 @@ void main() {
     );
 
     // Verify that the values were actually stored.
-    expect(await prefs.getString(stringKey), customStringValue);
-    expect(await prefs.getInt(intKey), customIntValue);
-    expect(await prefs.getDouble(doubleKey), customDoubleValue);
-    expect(await prefs.getBool(boolKey), customBoolValue);
-    expect(await prefs.getStringList(stringListKey), customStringListValue);
+    expect(prefs.getString(stringKey), customStringValue);
+    expect(prefs.getInt(intKey), customIntValue);
+    expect(prefs.getDouble(doubleKey), customDoubleValue);
+    expect(prefs.getBool(boolKey), customBoolValue);
+    expect(prefs.getStringList(stringListKey), customStringListValue);
+  });
+
+  test('reload refreshes cache from platform', () async {
+    expect(prefs.getString('reload_key'), isNull);
+    await SharedPreferencesPlusPlatform.instance.setString(
+      'reload_key',
+      'reload_value',
+      options: prefs.options,
+    );
+    expect(prefs.getString('reload_key'), isNull);
+    await prefs.reload();
+    expect(prefs.getString('reload_key'), 'reload_value');
+  });
+
+  test('clearCache invalidates cache for options', () {
+    expect(prefs.getString(stringKey), defaultStringValue);
+    SharedPreferencesPlus.clearCache();
+    expect(() => prefs.getString(stringKey), throwsStateError);
   });
 
   test('containsKey reports presence and absence', () async {
     await prefs.setString('present', 'x');
-    expect(await prefs.containsKey('present'), isTrue);
-    expect(await prefs.containsKey('absent'), isFalse);
+    expect(prefs.containsKey('present'), isTrue);
+    expect(prefs.containsKey('absent'), isFalse);
     expect(
       fakePlatform.methodCalls.any(
         (call) =>
-            call.method == "containsKey" &&
+            call.method == "setString" &&
             call.arguments['key'] == 'present' &&
             call.arguments['options'] == prefs.options.name,
       ),
@@ -148,10 +154,26 @@ void main() {
   test('getKeys returns all keys', () async {
     await prefs.setString('a', 'x');
     await prefs.setInt('b', 1);
-    expect(await prefs.getKeys(), containsAll(<String>['a', 'b']));
+    expect(prefs.getKeys(), containsAll(<String>['a', 'b']));
     expect(
       fakePlatform.methodCalls.any(
-        (call) => call.method == "getKeys" && call.arguments['options'] == prefs.options.name,
+        (call) => call.method == "setInt" && call.arguments['options'] == prefs.options.name,
+      ),
+      isTrue,
+    );
+  });
+
+  test('getAll returns all values with string lists decoded', () async {
+    await prefs.setString('a', 'x');
+    await prefs.setInt('b', 1);
+    await prefs.setStringList('c', <String>['m', 'n']);
+    final all = prefs.getAll();
+    expect(all['a'], 'x');
+    expect(all['b'], 1);
+    expect(all['c'], <String>['m', 'n']);
+    expect(
+      fakePlatform.methodCalls.any(
+        (call) => call.method == "setStringList" && call.arguments['options'] == prefs.options.name,
       ),
       isTrue,
     );
@@ -160,9 +182,9 @@ void main() {
   test('remove deletes a key and is idempotent', () async {
     await prefs.setString('a', 'x');
     await prefs.remove('a');
-    expect(await prefs.containsKey('a'), isFalse);
+    expect(prefs.containsKey('a'), isFalse);
     await prefs.remove('a');
-    expect(await prefs.containsKey('a'), isFalse);
+    expect(prefs.containsKey('a'), isFalse);
     expect(
       fakePlatform.methodCalls.any(
         (call) =>
@@ -178,7 +200,7 @@ void main() {
     await prefs.setString('a', 'x');
     await prefs.setInt('b', 1);
     await prefs.clear();
-    expect(await prefs.getKeys(), isEmpty);
+    expect(prefs.getKeys(), isEmpty);
     expect(
       fakePlatform.methodCalls.any(
         (call) => call.method == "clear" && call.arguments['options'] == prefs.options.name,
@@ -189,38 +211,32 @@ void main() {
 
   test('options are forwarded for every method', () async {
     final SharedPreferencesPlusOptions custom = SharedPreferencesPlusOptions(name: 'CustomPrefs');
-    final SharedPreferencesPlus customPrefs = SharedPreferencesPlus(options: custom);
+    final SharedPreferencesPlus customPrefs = await SharedPreferencesPlus.getInstance(options: custom);
     const String key = 'k';
 
     await customPrefs.setString(key, 'v');
     expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
-    await customPrefs.getString(key);
-    expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
+    expect(customPrefs.getString(key), 'v');
 
     await customPrefs.setInt(key, 1);
     expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
-    await customPrefs.getInt(key);
-    expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
+    expect(customPrefs.getInt(key), 1);
 
     await customPrefs.setDouble(key, 1.5);
     expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
-    await customPrefs.getDouble(key);
-    expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
+    expect(customPrefs.getDouble(key), 1.5);
 
     await customPrefs.setBool(key, true);
     expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
-    await customPrefs.getBool(key);
-    expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
+    expect(customPrefs.getBool(key), true);
 
     await customPrefs.setStringList(key, <String>['a']);
     expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
-    await customPrefs.getStringList(key);
-    expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
+    expect(customPrefs.getStringList(key), <String>['a']);
 
-    await customPrefs.containsKey(key);
-    expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
-    await customPrefs.getKeys();
-    expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
+    expect(customPrefs.containsKey(key), isTrue);
+    expect(customPrefs.getKeys(), contains(key));
+    expect(customPrefs.getAll()[key], isNotNull);
     await customPrefs.remove(key);
     expect(fakePlatform.lastOptions?.name, 'CustomPrefs');
     await customPrefs.clear();
@@ -229,7 +245,12 @@ void main() {
 
   test('mocking with initialData', () async {
     final SharedPreferencesPlusOptions custom = SharedPreferencesPlusOptions(name: 'CustomPrefs');
-    final SharedPreferencesPlus customPrefs = SharedPreferencesPlus(options: custom);
+    final SharedPreferencesPlus customPrefs = await SharedPreferencesPlus.getInstance(options: custom);
+
+    final SharedPreferencesPlusOptions newCustom = SharedPreferencesPlusOptions(
+      name: 'CustomPrefs',
+    );
+    final SharedPreferencesPlus newCustomPrefs = await SharedPreferencesPlus.getInstance(options: newCustom);
 
     // Create mock data with default options
     SharedPreferencesPlus.setMockInitialValues({'key': 'value'});
@@ -237,8 +258,9 @@ void main() {
     // Creating mock data with custom options should not affect the default options
     SharedPreferencesPlus.setMockInitialValues({'key': 'otherValue'}, options: custom);
 
-    expect(await prefs.getString("key"), equals("value"));
-    expect(await customPrefs.getString("key"), equals("otherValue"));
+    expect(prefs.getString("key"), equals("value"));
+    expect(customPrefs.getString("key"), equals("otherValue"));
+    expect(newCustomPrefs.getString("key"), equals("otherValue"));
   });
 }
 
@@ -407,5 +429,14 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     _record(options);
     methodCalls.add(MethodCall('getKeys', {'options': options.name}));
     return await _store.getKeys(options: options);
+  }
+
+  @override
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    _record(options);
+    methodCalls.add(MethodCall('getAll', {'options': options.name}));
+    return await _store.getAll(options: options);
   }
 }

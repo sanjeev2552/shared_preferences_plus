@@ -161,4 +161,24 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     }
     return <String>{};
   }
+
+  @override
+  Future<Map<String, Object>> getAll({SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()}) {
+    return methodChannel.invokeMethod<Map<Object?, Object>>('getAll', _argsWithOptions(options)).then((value) {
+      if (value == null) {
+        return <String, Object>{};
+      }
+      final Map<String, Object> result = {};
+      value.forEach((Object? key, Object? value) {
+        if (key is String && value != null) {
+          if (value is List && value.every((Object? item) => item is String)) {
+            result[key] = value.cast<String>();
+          } else {
+            result[key] = value;
+          }
+        }
+      });
+      return result;
+    });
+  }
 }

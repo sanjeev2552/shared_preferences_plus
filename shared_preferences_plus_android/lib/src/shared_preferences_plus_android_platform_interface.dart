@@ -4,6 +4,7 @@ import 'package:shared_preferences_plus_platform_interface/shared_preferences_pl
 
 class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
   final SharedPreferencesPlusApi _api;
+  static const String _stringListSeparator = "/0001u";
 
   SharedPreferencesPlusAndroid({SharedPreferencesPlusApi? api})
     : _api =
@@ -131,5 +132,29 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
   }) async {
     final keys = await _api.getKeys(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
     return keys.toSet();
+  }
+
+  @override
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    final all = await _api.getAll(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    final Map<String, Object> result = {};
+    for (final MapEntry<String, Object?> entry in all.entries) {
+      final Object? value = entry.value;
+      if (value == null) {
+        continue;
+      }
+      if (value is List && value.every((Object? item) => item is String)) {
+        result[entry.key] = value.cast<String>();
+        continue;
+      }
+      if (value is String && value.contains(_stringListSeparator)) {
+        result[entry.key] = value.split(_stringListSeparator);
+        continue;
+      }
+      result[entry.key] = value;
+    }
+    return result;
   }
 }

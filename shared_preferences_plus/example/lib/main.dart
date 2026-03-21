@@ -14,12 +14,26 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late SharedPreferencesPlus _main, _other;
+  bool _ready = false;
 
   @override
   void initState() {
-    _other = SharedPreferencesPlus(options: const SharedPreferencesPlusOptions(name: 'other'));
-    _main = SharedPreferencesPlus(options: const SharedPreferencesPlusOptions(name: 'main'));
     super.initState();
+    _initPrefs();
+  }
+
+  Future<void> _initPrefs() async {
+    _other = await SharedPreferencesPlus.getInstance(
+      options: const SharedPreferencesPlusOptions(name: 'other'),
+    );
+    _main = await SharedPreferencesPlus.getInstance(
+      options: const SharedPreferencesPlusOptions(name: 'main'),
+    );
+    if (mounted) {
+      setState(() {
+        _ready = true;
+      });
+    }
   }
 
   @override
@@ -32,29 +46,37 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {
+                onPressed: _ready
+                    ? () {
                   _main.setString('key_main', 'value_main');
-                },
+                }
+                    : null,
                 child: const Text('Set Main String'),
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: _ready
+                    ? () {
                   _other.setString('key_other', 'value_other');
-                },
+                }
+                    : null,
                 child: const Text('Set Other String'),
               ),
               ElevatedButton(
-                onPressed: () async {
-                  final value = await _main.getString('key_main');
+                onPressed: _ready
+                    ? () {
+                  final value = _main.getString('key_main');
                   print(value);
-                },
+                }
+                    : null,
                 child: const Text('Get Main String'),
               ),
               ElevatedButton(
-                onPressed: () async {
-                  final value = await _other.getString('key_other');
+                onPressed: _ready
+                    ? () {
+                  final value = _other.getString('key_other');
                   print(value);
-                },
+                }
+                    : null,
                 child: const Text('Get Other String'),
               ),
             ],

@@ -128,4 +128,18 @@ class SharedPreferencesPlusFoundation extends SharedPreferencesPlusPlatform {
     final keys = await _api.getKeys(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
     return keys.toSet();
   }
+
+  @override
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    final all = await _api.getAll(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return Map<String, Object>.fromEntries(
+      all.entries
+          .where((MapEntry<String, Object?> entry) => entry.value != null)
+          .map(
+            (MapEntry<String, Object?> entry) => MapEntry<String, Object>(entry.key, entry.value!),
+          ),
+    );
+  }
 }

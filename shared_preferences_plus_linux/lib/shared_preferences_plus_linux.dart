@@ -161,4 +161,24 @@ class SharedPreferencesPlusLinux extends SharedPreferencesPlusPlatform {
     final jsonData = await _readPreferences(options);
     return jsonData.keys.toSet();
   }
+
+  @override
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    final jsonData = await _readPreferences(options);
+    final Map<String, Object> result = {};
+    for (final MapEntry<String, Object?> entry in jsonData.entries) {
+      final Object? value = entry.value;
+      if (value == null) {
+        continue;
+      }
+      if (value is List && value.every((Object? item) => item is String)) {
+        result[entry.key] = value.cast<String>();
+        continue;
+      }
+      result[entry.key] = value;
+    }
+    return result;
+  }
 }

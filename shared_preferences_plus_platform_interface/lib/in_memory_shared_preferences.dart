@@ -3,7 +3,10 @@ import 'package:shared_preferences_plus_platform_interface/types.dart';
 
 /// Simple in-memory implementation intended for tests.
 class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
-  static InMemorySharedPreferencesPlusPlatform withData(Map<String, Object?> initialValues, {String? name}) {
+  static InMemorySharedPreferencesPlusPlatform withData(
+    Map<String, Object?> initialValues, {
+    String? name,
+  }) {
     _storeByName[name ?? 'SharedPreferencesPlus'] = initialValues;
     return InMemorySharedPreferencesPlusPlatform();
   }
@@ -137,5 +140,19 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     return _bucket(options).keys.toSet();
+  }
+
+  @override
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async {
+    final bucket = _bucket(options);
+    return Map<String, Object>.fromEntries(
+      bucket.entries
+          .where((MapEntry<String, Object?> entry) => entry.value != null)
+          .map(
+            (MapEntry<String, Object?> entry) => MapEntry<String, Object>(entry.key, entry.value!),
+          ),
+    );
   }
 }

@@ -143,6 +143,7 @@ interface SharedPreferencesPlusApi {
   fun clear(options: SharedPreferencesPlusPigeonOptions)
   fun containsKey(key: String, options: SharedPreferencesPlusPigeonOptions): Boolean
   fun getKeys(options: SharedPreferencesPlusPigeonOptions): List<String>
+  fun getAll(options: SharedPreferencesPlusPigeonOptions): Map<String, Any?>
 
   companion object {
     /** The codec used by SharedPreferencesPlusApi. */
@@ -406,6 +407,23 @@ interface SharedPreferencesPlusApi {
             val optionsArg = args[0] as SharedPreferencesPlusPigeonOptions
             val wrapped: List<Any?> = try {
               listOf(api.getKeys(optionsArg))
+            } catch (exception: Throwable) {
+              MessagesPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getAll$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val optionsArg = args[0] as SharedPreferencesPlusPigeonOptions
+            val wrapped: List<Any?> = try {
+              listOf(api.getAll(optionsArg))
             } catch (exception: Throwable) {
               MessagesPigeonUtils.wrapError(exception)
             }

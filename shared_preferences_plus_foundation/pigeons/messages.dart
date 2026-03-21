@@ -29,4 +29,5 @@ abstract class SharedPreferencesPlusApi {
   void clear(SharedPreferencesPlusPigeonOptions options);
   bool containsKey(String key, SharedPreferencesPlusPigeonOptions options);
   List<String> getKeys(SharedPreferencesPlusPigeonOptions options);
+  Map<String, Object?> getAll(SharedPreferencesPlusPigeonOptions options);
 }

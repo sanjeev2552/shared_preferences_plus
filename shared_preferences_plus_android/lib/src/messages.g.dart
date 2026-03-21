@@ -388,4 +388,23 @@ class SharedPreferencesPlusApi {
     ;
     return (pigeonVar_replyValue! as List<Object?>).cast<String>();
   }
+
+  Future<Map<String, Object?>> getAll(SharedPreferencesPlusPigeonOptions options) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getAll$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[options]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
+    return (pigeonVar_replyValue! as Map<Object?, Object?>).cast<String, Object?>();
+  }
 }

@@ -205,6 +205,7 @@ protocol SharedPreferencesPlusApi {
   func clear(options: SharedPreferencesPlusPigeonOptions) throws
   func containsKey(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> Bool
   func getKeys(options: SharedPreferencesPlusPigeonOptions) throws -> [String]
+  func getAll(options: SharedPreferencesPlusPigeonOptions) throws -> [String: Any?]
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -439,6 +440,23 @@ class SharedPreferencesPlusApiSetup {
       }
     } else {
       getKeysChannel.setMessageHandler(nil)
+    }
+  }
+  do {
+    let getAllChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getAll\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      getAllChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let optionsArg = args[0] as! SharedPreferencesPlusPigeonOptions
+        do {
+          let result = try api.getAll(options: optionsArg)
+          reply(wrapResult(result))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      getAllChannel.setMessageHandler(nil)
     }
   }
 }

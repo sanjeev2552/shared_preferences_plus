@@ -4,6 +4,17 @@ class SharedPreferencesPlusApiHandler: NSObject, SharedPreferencesPlusApi {
     private func getUserDefaults(options: SharedPreferencesPlusPigeonOptions) -> UserDefaults? {
         return UserDefaults.init(suiteName: options.name)
     }
+
+    private func normalizeNumber(_ number: NSNumber) -> Any {
+        if CFGetTypeID(number) == CFBooleanGetTypeID() {
+            return number.boolValue
+        }
+        let doubleValue = number.doubleValue
+        if doubleValue.rounded() == doubleValue {
+            return number.int64Value
+        }
+        return doubleValue
+    }
     
     func getString(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> String? {
         return getUserDefaults(options: options)?.string(forKey: key)
@@ -82,5 +93,26 @@ class SharedPreferencesPlusApiHandler: NSObject, SharedPreferencesPlusApi {
             return []
         }
         return Array(userDefaults.dictionaryRepresentation().keys)
+    }
+
+    func getAll(options: SharedPreferencesPlusPigeonOptions) throws -> [String: Any?] {
+        guard let userDefaults = getUserDefaults(options: options) else {
+            return [:]
+        }
+        let stored = userDefaults.dictionaryRepresentation()
+        var result: [String: Any?] = [:]
+        for (key, value) in stored {
+            switch value {
+            case let stringValue as String:
+                result[key] = stringValue
+            case let numberValue as NSNumber:
+                result[key] = normalizeNumber(numberValue)
+            case let listValue as [String]:
+                result[key] = listValue
+            default:
+                break
+            }
+        }
+        return result
     }
 }
