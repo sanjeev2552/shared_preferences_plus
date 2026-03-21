@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences_plus_platform_interface/shared_preferences_plus_platform_interface.dart';
 
 /// Dart wrapper around the platform implementation of shared preferences.
+///
+/// Reads are synchronous and require the in-memory cache to be initialized via
+/// [getInstance] before any `get*` calls are made. Writes are asynchronous and
+/// update the cache after the platform write completes.
 class SharedPreferencesPlus {
   /// Returns the active platform implementation.
   static SharedPreferencesPlusPlatform get _platform => SharedPreferencesPlusPlatform.instance;
@@ -11,17 +15,24 @@ class SharedPreferencesPlus {
   /// Options that control the underlying preferences namespace.
   final SharedPreferencesPlusOptions options;
 
-  /// Creates a wrapper instance using the provided [options].
+  /// Loads preferences for [options] into the shared cache and returns an instance.
+  ///
+  /// Must be called before any synchronous reads. The cache is shared across
+  /// instances that use the same [SharedPreferencesPlusOptions.name].
   static Future<SharedPreferencesPlus> getInstance({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
     return _load(options: options);
   }
 
-  /// Creates a wrapper instance using the provided [options] without loading values into the cache.
+  /// Creates a wrapper instance using [options] without loading values into the cache.
+  ///
+  /// Intended for internal use. External callers should use [getInstance].
   SharedPreferencesPlus._({this.options = const SharedPreferencesPlusOptions()});
 
   /// Stores a string value under [key].
+  ///
+  /// Updates the cache after the platform write completes.
   Future<void> setString(String key, String value) {
     return _platform.setString(key, value, options: options).then((_) {
       final cache = _cacheForWrite();
@@ -32,12 +43,16 @@ class SharedPreferencesPlus {
   }
 
   /// Returns the string stored for [key], or `null` if not present.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   String? getString(String key) {
     final value = _cache()[key];
     return value is String ? value : null;
   }
 
   /// Stores an integer value under [key].
+  ///
+  /// Updates the cache after the platform write completes.
   Future<void> setInt(String key, int value) {
     return _platform.setInt(key, value, options: options).then((_) {
       final cache = _cacheForWrite();
@@ -48,12 +63,16 @@ class SharedPreferencesPlus {
   }
 
   /// Returns the integer stored for [key], or `null` if not present.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   int? getInt(String key) {
     final value = _cache()[key];
     return value is int ? value : null;
   }
 
   /// Stores a double value under [key].
+  ///
+  /// Updates the cache after the platform write completes.
   Future<void> setDouble(String key, double value) {
     return _platform.setDouble(key, value, options: options).then((_) {
       final cache = _cacheForWrite();
@@ -64,12 +83,16 @@ class SharedPreferencesPlus {
   }
 
   /// Returns the double stored for [key], or `null` if not present.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   double? getDouble(String key) {
     final value = _cache()[key];
     return value is double ? value : null;
   }
 
   /// Stores a boolean value under [key].
+  ///
+  /// Updates the cache after the platform write completes.
   Future<void> setBool(String key, bool value) {
     return _platform.setBool(key, value, options: options).then((_) {
       final cache = _cacheForWrite();
@@ -80,12 +103,16 @@ class SharedPreferencesPlus {
   }
 
   /// Returns the boolean stored for [key], or `null` if not present.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   bool? getBool(String key) {
     final value = _cache()[key];
     return value is bool ? value : null;
   }
 
   /// Stores a list of strings under [key].
+  ///
+  /// Updates the cache after the platform write completes.
   Future<void> setStringList(String key, List<String> value) {
     return _platform.setStringList(key, value, options: options).then((_) {
       final cache = _cacheForWrite();
@@ -96,12 +123,16 @@ class SharedPreferencesPlus {
   }
 
   /// Returns the string list stored for [key], or `null` if not present.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   List<String>? getStringList(String key) {
     final value = _cache()[key];
     return value is List<String> ? List<String>.from(value) : null;
   }
 
   /// Removes the value stored for [key], if any.
+  ///
+  /// Updates the cache after the platform write completes.
   Future<void> remove(String key) {
     return _platform.remove(key, options: options).then((_) {
       final cache = _cacheForWrite();
@@ -112,6 +143,8 @@ class SharedPreferencesPlus {
   }
 
   /// Clears all stored preferences for this [options] namespace.
+  ///
+  /// Updates the cache after the platform write completes.
   Future<void> clear() {
     return _platform.clear(options: options).then((_) {
       final cache = _cacheForWrite();
@@ -122,16 +155,22 @@ class SharedPreferencesPlus {
   }
 
   /// Returns `true` if [key] exists.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   bool containsKey(String key) {
     return _cache().containsKey(key);
   }
 
   /// Returns the set of all keys stored in this preferences namespace.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   Set<String> getKeys() {
     return _cache().keys.toSet();
   }
 
   /// Returns all stored preferences for this [options] namespace.
+  ///
+  /// Throws [StateError] if the cache has not been initialized via [getInstance].
   Map<String, Object> getAll() {
     return Map<String, Object>.from(_cache());
   }
@@ -153,12 +192,15 @@ class SharedPreferencesPlus {
   }
 
   /// Clears the shared cache for the provided [options].
+  ///
+  /// Subsequent reads will throw [StateError] until [reload] is called again.
   static void clearCache({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
     _cacheByName.remove(_bucketName(options));
   }
 
+  /// Sets initial values for tests and initializes the cache for [options].
   @visibleForTesting
   static void setMockInitialValues(
     Map<String, Object?> values, {
