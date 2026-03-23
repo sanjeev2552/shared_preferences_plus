@@ -1,3 +1,8 @@
+## 1.0.1
+
+* Add Swift Package Manager support for iOS and macOS.
+* Update package-level Dart documentation.
+
 ## 1.0.0
 
 * Initial release.

@@ -2,9 +2,14 @@ import 'package:shared_preferences_plus_platform_interface/shared_preferences_pl
 import 'package:shared_preferences_plus_platform_interface/types.dart';
 import 'package:shared_preferences_plus_windows/file_util.dart';
 
+/// Windows implementation of [SharedPreferencesPlusPlatform].
+///
+/// Uses a filesystem-backed store to persist preferences.
 class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
+  /// Creates a Windows-backed shared preferences implementation.
   SharedPreferencesPlusWindows();
 
+  /// Registers this implementation as the default platform instance.
   static void registerWith() {
     SharedPreferencesPlusPlatform.instance = SharedPreferencesPlusWindows();
   }
@@ -21,6 +26,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Reads a string value for [key].
   Future<String?> getString(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -31,6 +37,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Persists a string [value] for [key].
   Future<void> setString(
     String key,
     String value, {
@@ -42,6 +49,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Persists an integer [value] for [key].
   Future<void> setInt(
     String key,
     int value, {
@@ -53,6 +61,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Reads an integer value for [key].
   Future<int?> getInt(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -63,6 +72,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Persists a double [value] for [key].
   Future<void> setDouble(
     String key,
     double value, {
@@ -74,6 +84,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Reads a double value for [key].
   Future<double?> getDouble(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -84,6 +95,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Persists a boolean [value] for [key].
   Future<void> setBool(
     String key,
     bool value, {
@@ -95,6 +107,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Reads a boolean value for [key].
   Future<bool?> getBool(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -105,6 +118,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Persists a string list [value] for [key].
   Future<void> setStringList(
     String key,
     List<String> value, {
@@ -116,6 +130,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Reads a string list for [key].
   Future<List<String>?> getStringList(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -129,6 +144,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Removes the preference for [key].
   Future<void> remove(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -139,6 +155,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Clears all preferences for the configured [options].
   Future<void> clear({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
@@ -146,6 +163,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Returns whether a value exists for [key].
   Future<bool> containsKey(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -155,6 +173,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Returns all stored keys for the configured [options].
   Future<Set<String>> getKeys({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
@@ -163,6 +182,7 @@ class SharedPreferencesPlusWindows extends SharedPreferencesPlusPlatform {
   }
 
   @override
+  /// Returns all stored key-value pairs for the configured [options].
   Future<Map<String, Object>> getAll({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {

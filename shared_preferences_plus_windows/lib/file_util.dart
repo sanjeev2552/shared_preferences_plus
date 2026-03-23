@@ -6,6 +6,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider_windows/path_provider_windows.dart';
 import 'package:shared_preferences_plus_platform_interface/types.dart';
 
+/// File utilities used by the Windows implementation of shared_preferences_plus.
 class FileUtil {
   FileUtil._();
 
@@ -21,6 +22,7 @@ class FileUtil {
     return _fileSystem.file(dbFilePath);
   }
 
+  /// Reads stored preferences for the provided [options].
   static Future<Map<String, Object?>> readPreferences(SharedPreferencesPlusOptions options) async {
     final file = await _getDbFile(options);
     if (file == null || !file.existsSync()) {
@@ -33,6 +35,7 @@ class FileUtil {
     return jsonDecode(contents) as Map<String, Object?>;
   }
 
+  /// Persists [preferences] for the provided [options].
   static Future<void> writePreferences(
     SharedPreferencesPlusOptions options,
     Map<String, Object?> preferences,

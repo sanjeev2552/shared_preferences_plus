@@ -26,6 +26,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Persists a string [value] for [key].
   Future<void> setString(
     String key,
     String value, {
@@ -35,6 +36,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Reads a string value for [key].
   Future<String?> getString(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -43,6 +45,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Persists an integer [value] for [key].
   Future<void> setInt(
     String key,
     int value, {
@@ -52,6 +55,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Reads an integer value for [key].
   Future<int?> getInt(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -62,6 +66,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Persists a double [value] for [key].
   Future<void> setDouble(
     String key,
     double value, {
@@ -71,6 +76,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Reads a double value for [key].
   Future<double?> getDouble(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -81,6 +87,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Persists a boolean [value] for [key].
   Future<void> setBool(
     String key,
     bool value, {
@@ -90,6 +97,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Reads a boolean value for [key].
   Future<bool?> getBool(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -100,6 +108,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Persists a string list [value] for [key].
   Future<void> setStringList(
     String key,
     List<String> value, {
@@ -112,6 +121,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Reads a string list for [key].
   Future<List<String>?> getStringList(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -127,6 +137,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Removes the preference for [key].
   Future<void> remove(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -135,6 +146,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Clears all preferences for the configured [options].
   Future<void> clear({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
@@ -142,6 +154,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Returns whether a value exists for [key].
   Future<bool> containsKey(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -152,6 +165,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Returns all stored keys for the configured [options].
   Future<Set<String>> getKeys({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
@@ -163,6 +177,7 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   }
 
   @override
+  /// Returns all stored key-value pairs for the configured [options].
   Future<Map<String, Object>> getAll({SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()}) {
     return methodChannel.invokeMethod<Map<Object?, Object>>('getAll', _argsWithOptions(options)).then((value) {
       if (value == null) {

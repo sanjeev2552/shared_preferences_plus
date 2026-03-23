@@ -3,6 +3,7 @@ import 'package:shared_preferences_plus_platform_interface/types.dart';
 
 /// Simple in-memory implementation intended for tests.
 class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
+  /// Creates an in-memory instance seeded with [initialValues].
   static InMemorySharedPreferencesPlusPlatform withData(
     Map<String, Object?> initialValues, {
     String? name,
@@ -23,6 +24,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Persists a string [value] for [key].
   Future<void> setString(
     String key,
     String value, {
@@ -32,6 +34,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Reads a string value for [key].
   Future<String?> getString(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -41,6 +44,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Persists an integer [value] for [key].
   Future<void> setInt(
     String key,
     int value, {
@@ -50,6 +54,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Reads an integer value for [key].
   Future<int?> getInt(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -59,6 +64,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Persists a double [value] for [key].
   Future<void> setDouble(
     String key,
     double value, {
@@ -68,6 +74,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Reads a double value for [key].
   Future<double?> getDouble(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -77,6 +84,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Persists a boolean [value] for [key].
   Future<void> setBool(
     String key,
     bool value, {
@@ -86,6 +94,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Reads a boolean value for [key].
   Future<bool?> getBool(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -95,6 +104,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Persists a string list [value] for [key].
   Future<void> setStringList(
     String key,
     List<String> value, {
@@ -104,6 +114,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Reads a string list for [key].
   Future<List<String>?> getStringList(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -113,6 +124,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Removes the preference for [key].
   Future<void> remove(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -121,6 +133,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Clears all preferences for the configured [options].
   Future<void> clear({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
@@ -128,6 +141,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Returns whether a value exists for [key].
   Future<bool> containsKey(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
@@ -136,6 +150,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Returns all stored keys for the configured [options].
   Future<Set<String>> getKeys({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
@@ -143,6 +158,7 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   }
 
   @override
+  /// Returns all stored key-value pairs for the configured [options].
   Future<Map<String, Object>> getAll({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {

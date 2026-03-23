@@ -4,7 +4,7 @@ import 'package:pigeon/pigeon.dart';
   PigeonOptions(
     dartOut: 'lib/src/messages.g.dart',
     dartPackageName: 'shared_preferences_plus_android',
-    swiftOut: 'darwin/Classes/Messages.swift',
+    swiftOut: 'darwin/shared_preferences_plus_foundation/Sources/shared_preferences_plus_foundation/Messages.swift',
   ),
 )
 class SharedPreferencesPlusPigeonOptions {

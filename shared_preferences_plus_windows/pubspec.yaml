@@ -1,6 +1,6 @@
 name: shared_preferences_plus_windows
 description: "Windows implementation of shared_preferences_plus."
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/sanjeev2552/shared_preferences_plus
 repository: https://github.com/sanjeev2552/shared_preferences_plus
 issue_tracker: https://github.com/sanjeev2552/shared_preferences_plus/issues
