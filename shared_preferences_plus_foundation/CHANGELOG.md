@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Some fixes in swift package manager setup
+
 ## 1.0.1
 
 * Add Swift Package Manager support for iOS and macOS.

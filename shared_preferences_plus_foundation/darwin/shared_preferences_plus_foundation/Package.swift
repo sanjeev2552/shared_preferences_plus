@@ -14,7 +14,7 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(name: "Flutter", path: "../Flutter")
+    .package(name: "Flutter" path: "../../Flutter")
   ],
   targets: [
     .target(
