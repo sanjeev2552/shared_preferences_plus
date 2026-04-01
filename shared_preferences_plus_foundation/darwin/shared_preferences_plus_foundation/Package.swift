@@ -9,7 +9,7 @@ let package = Package(
   ],
   products: [
     .library(
-      name: "shared_preferences_plus_foundation",
+      name: "shared-preferences-plus-foundation",
       targets: ["shared_preferences_plus_foundation"]
     )
   ],  

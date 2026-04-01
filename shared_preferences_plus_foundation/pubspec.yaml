@@ -1,6 +1,6 @@
 name: shared_preferences_plus_foundation
 description: "iOS and macOS implementation of shared_preferences_plus."
-version: 1.0.4
+version: 1.0.5
 homepage: https://github.com/sanjeev2552/shared_preferences_plus
 repository: https://github.com/sanjeev2552/shared_preferences_plus
 issue_tracker: https://github.com/sanjeev2552/shared_preferences_plus/issues

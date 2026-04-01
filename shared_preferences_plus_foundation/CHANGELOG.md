@@ -1,4 +1,4 @@
-## 1.0.4
+## 1.0.5
 
 - Fixes in swift package manager setup
 
