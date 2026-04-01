@@ -441,8 +441,6 @@ class SharedPreferencesPlusApiSetup {
     } else {
       getKeysChannel.setMessageHandler(nil)
     }
-  }
-  do {
     let getAllChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getAll\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getAllChannel.setMessageHandler { message, reply in

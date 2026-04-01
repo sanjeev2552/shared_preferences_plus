@@ -237,7 +237,7 @@ class SharedPreferencesPlusApi {
         isNullValid: true,
     )
     ;
-    return (pigeonVar_replyValue is double) ? pigeonVar_replyValue : null;
+    return pigeonVar_replyValue as double?;
   }
 
   Future<void> setBool(String key, bool value, SharedPreferencesPlusPigeonOptions options) async {
@@ -274,7 +274,7 @@ class SharedPreferencesPlusApi {
         isNullValid: true,
     )
     ;
-    return (pigeonVar_replyValue is bool) ? pigeonVar_replyValue : null;
+    return pigeonVar_replyValue as bool?;
   }
 
   Future<void> setStringList(String key, List<String> value, SharedPreferencesPlusPigeonOptions options) async {
@@ -311,12 +311,7 @@ class SharedPreferencesPlusApi {
         isNullValid: true,
     )
     ;
-    if (pigeonVar_replyValue is List) {
-      if (pigeonVar_replyValue.every((Object? item) => item is String)) {
-        return pigeonVar_replyValue.cast<String>();
-      }
-    }
-    return null;
+    return (pigeonVar_replyValue as List<Object?>?)?.cast<String>();
   }
 
   Future<void> remove(String key, SharedPreferencesPlusPigeonOptions options) async {
@@ -371,7 +366,7 @@ class SharedPreferencesPlusApi {
         isNullValid: false,
     )
     ;
-    return pigeonVar_replyValue as bool;
+    return pigeonVar_replyValue! as bool;
   }
 
   Future<List<String>> getKeys(SharedPreferencesPlusPigeonOptions options) async {
@@ -390,12 +385,7 @@ class SharedPreferencesPlusApi {
         isNullValid: false,
     )
     ;
-    if (pigeonVar_replyValue is List) {
-      if (pigeonVar_replyValue.every((Object? item) => item is String)) {
-        return pigeonVar_replyValue.cast<String>();
-      }
-    }
-    return <String>[];
+    return (pigeonVar_replyValue! as List<Object?>).cast<String>();
   }
 
   Future<Map<String, Object?>> getAll(SharedPreferencesPlusPigeonOptions options) async {

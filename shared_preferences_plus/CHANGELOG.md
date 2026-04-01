@@ -1,6 +1,7 @@
-## 1.0.5
+## 1.0.6
 
 - Fixes in swift package manager setup
+- Regenerated Messages.swift
 
 ## 1.0.1
 
