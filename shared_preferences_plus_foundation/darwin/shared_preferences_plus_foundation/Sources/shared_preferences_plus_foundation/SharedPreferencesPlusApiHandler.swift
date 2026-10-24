@@ -1,117 +1,84 @@
 import Foundation
+import CoreFoundation
 
 class SharedPreferencesPlusApiHandler: NSObject, SharedPreferencesPlusApi {
-    private func getUserDefaults(options: SharedPreferencesPlusPigeonOptions) -> UserDefaults? {
-        return UserDefaults.init(suiteName: options.name)
+    private let doubleTag = "shared_preferences_plus/double/1"
+
+    private func defaults(_ options: SharedPreferencesPlusPigeonOptions) throws -> UserDefaults {
+        guard let defaults = UserDefaults(suiteName: options.name) else {
+            throw NSError(domain: "shared_preferences_plus", code: 1,
+                          userInfo: [NSLocalizedDescriptionKey: "Unable to open preferences container"])
+        }
+        return defaults
     }
 
-    private func normalizeNumber(_ number: NSNumber) -> Any {
-        if CFGetTypeID(number) == CFBooleanGetTypeID() {
-            return number.boolValue
+    private func decode(_ value: Any) -> Any? {
+        if let envelope = value as? [String: String], envelope["type"] == doubleTag,
+           let text = envelope["value"], let double = Double(text) {
+            return double
         }
-        let doubleValue = number.doubleValue
-        if doubleValue.rounded() == doubleValue {
-            return number.int64Value
+        if let number = value as? NSNumber {
+            if CFGetTypeID(number) == CFBooleanGetTypeID() { return number.boolValue }
+            let type = String(cString: number.objCType)
+            return type == "f" || type == "d" ? number.doubleValue as Any : number.int64Value as Any
         }
-        return doubleValue
-    }
-    
-    func getString(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> String? {
-        return getUserDefaults(options: options)?.string(forKey: key)
-    }
-    
-    func setString(key: String, value: String, options: SharedPreferencesPlusPigeonOptions) throws {
-        getUserDefaults(options: options)?.set(value, forKey: key)
-    }
-
-    func setInt(key: String, value: Int64, options: SharedPreferencesPlusPigeonOptions) throws {
-        getUserDefaults(options: options)?.set(value, forKey: key)
-    }
-
-    func getInt(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> Int64? {
-        guard let stored = getUserDefaults(options: options)?.object(forKey: key) else {
-            return nil
-        }
-        if let intValue = stored as? Int64 {
-            return intValue
-        }
-        if let intValue = stored as? Int {
-            return Int64(intValue)
-        }
+        if let string = value as? String { return string }
+        if let list = value as? [String] { return list }
         return nil
     }
 
+    private func value(_ key: String, _ options: SharedPreferencesPlusPigeonOptions) throws -> Any? {
+        guard let raw = try defaults(options).persistentDomain(forName: options.name)?[key] else { return nil }
+        return decode(raw)
+    }
+
+    func setString(key: String, value: String, options: SharedPreferencesPlusPigeonOptions) throws {
+        try defaults(options).set(value, forKey: key)
+    }
+    func getString(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> String? {
+        return try value(key, options) as? String
+    }
+    func setInt(key: String, value: Int64, options: SharedPreferencesPlusPigeonOptions) throws {
+        try defaults(options).set(value, forKey: key)
+    }
+    func getInt(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> Int64? {
+        return try value(key, options) as? Int64
+    }
     func setDouble(key: String, value: Double, options: SharedPreferencesPlusPigeonOptions) throws {
-        getUserDefaults(options: options)?.set(value, forKey: key)
+        try defaults(options).set(["type": doubleTag, "value": String(value)], forKey: key)
     }
-
     func getDouble(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> Double? {
-        guard let stored = getUserDefaults(options: options)?.object(forKey: key) else {
-            return nil
-        }
-        return stored as? Double
+        return try value(key, options) as? Double
     }
-
     func setBool(key: String, value: Bool, options: SharedPreferencesPlusPigeonOptions) throws {
-        getUserDefaults(options: options)?.set(value, forKey: key)
+        try defaults(options).set(value, forKey: key)
     }
-
     func getBool(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> Bool? {
-        guard let stored = getUserDefaults(options: options)?.object(forKey: key) else {
-            return nil
-        }
-        return stored as? Bool
+        return try value(key, options) as? Bool
     }
-
     func setStringList(key: String, value: [String], options: SharedPreferencesPlusPigeonOptions) throws {
-        getUserDefaults(options: options)?.set(value, forKey: key)
+        try defaults(options).set(value, forKey: key)
     }
-
     func getStringList(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> [String]? {
-        return getUserDefaults(options: options)?.stringArray(forKey: key)
+        return try value(key, options) as? [String]
     }
-
     func remove(key: String, options: SharedPreferencesPlusPigeonOptions) throws {
-        getUserDefaults(options: options)?.removeObject(forKey: key)
+        try defaults(options).removeObject(forKey: key)
     }
-
     func clear(options: SharedPreferencesPlusPigeonOptions) throws {
-        guard let userDefaults = getUserDefaults(options: options) else {
-            return
-        }
-        for key in userDefaults.dictionaryRepresentation().keys {
-            userDefaults.removeObject(forKey: key)
-        }
+        try defaults(options).removePersistentDomain(forName: options.name)
     }
-
     func containsKey(key: String, options: SharedPreferencesPlusPigeonOptions) throws -> Bool {
-        return getUserDefaults(options: options)?.object(forKey: key) != nil
+        return try defaults(options).persistentDomain(forName: options.name)?[key] != nil
     }
-
     func getKeys(options: SharedPreferencesPlusPigeonOptions) throws -> [String] {
-        guard let userDefaults = getUserDefaults(options: options) else {
-            return []
-        }
-        return Array(userDefaults.dictionaryRepresentation().keys)
+        return Array(try getAll(options: options).keys)
     }
-
     func getAll(options: SharedPreferencesPlusPigeonOptions) throws -> [String: Any?] {
-        guard let userDefaults = getUserDefaults(options: options) else {
-            return [:]
-        }
-        let stored = userDefaults.dictionaryRepresentation()
+        let stored = try defaults(options).persistentDomain(forName: options.name) ?? [:]
         var result: [String: Any?] = [:]
-        for (key, value) in stored {
-            switch value {
-            case let stringValue as String:
-                result[key] = stringValue
-            case let numberValue as NSNumber:
-                result[key] = normalizeNumber(numberValue)
-            case let listValue as [String]:
-                result[key] = listValue
-            default:
-                break
-            }
+        for (key, raw) in stored {
+            if let decoded = decode(raw) { result[key] = decoded }
         }
         return result
     }

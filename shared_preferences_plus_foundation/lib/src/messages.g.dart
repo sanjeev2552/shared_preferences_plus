@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:typed_data' show Float64List, Int32List, Int64List;
 
 import 'package:flutter/services.dart';
+import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
 Object? _extractReplyValueOrThrow(
     List<Object?>? replyList,
@@ -130,7 +131,7 @@ class SharedPreferencesPlusApi {
   final String pigeonVar_messageChannelSuffix;
 
   Future<void> setString(String key, String value, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setString$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setString$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -148,7 +149,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<String?> getString(String key, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getString$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getString$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -167,7 +168,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<void> setInt(String key, int value, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setInt$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setInt$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -185,7 +186,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<int?> getInt(String key, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getInt$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getInt$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -204,7 +205,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<void> setDouble(String key, double value, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setDouble$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setDouble$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -222,7 +223,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<double?> getDouble(String key, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getDouble$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getDouble$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -241,7 +242,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<void> setBool(String key, bool value, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setBool$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setBool$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -259,7 +260,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<bool?> getBool(String key, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getBool$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getBool$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -278,7 +279,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<void> setStringList(String key, List<String> value, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setStringList$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setStringList$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -296,7 +297,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<List<String>?> getStringList(String key, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getStringList$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getStringList$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -315,7 +316,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<void> remove(String key, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.remove$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.remove$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -333,7 +334,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<void> clear(SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.clear$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.clear$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -351,7 +352,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<bool> containsKey(String key, SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.containsKey$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.containsKey$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -370,7 +371,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<List<String>> getKeys(SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getKeys$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getKeys$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -389,7 +390,7 @@ class SharedPreferencesPlusApi {
   }
 
   Future<Map<String, Object?>> getAll(SharedPreferencesPlusPigeonOptions options) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getAll$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getAll$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,

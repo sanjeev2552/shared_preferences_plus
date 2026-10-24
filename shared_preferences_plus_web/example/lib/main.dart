@@ -1,59 +1,44 @@
-// import 'package:flutter/material.dart';
-// import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences_plus_web/shared_preferences_plus_web.dart';
 
-// import 'package:flutter/services.dart';
-// import 'package:shared_preferences_plus_web/shared_preferences_plus_web.dart';
+void main() => runApp(const PreferencesExample());
 
-// void main() {
-//   runApp(const MyApp());
-// }
+/// Minimal native-backend example. For the cached public API and named
+/// containers, see the app-facing package's example application.
+class PreferencesExample extends StatefulWidget {
+  const PreferencesExample({super.key});
+  @override
+  State<PreferencesExample> createState() => _PreferencesExampleState();
+}
 
-// class MyApp extends StatefulWidget {
-//   const MyApp({super.key});
+class _PreferencesExampleState extends State<PreferencesExample> {
+  late final Future<int> _launchCount = _load();
 
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
+  Future<int> _load() async {
+    final preferences = SharedPreferencesPlusWeb();
+    final count = (await preferences.getInt('example_launch_count') ?? 0) + 1;
+    await preferences.setInt('example_launch_count', count);
+    return count;
+  }
 
-// class _MyAppState extends State<MyApp> {
-//   String _platformVersion = 'Unknown';
-//   final _sharedPreferencesPlusWebPlugin = SharedPreferencesPlusWeb();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     initPlatformState();
-//   }
-
-//   // Platform messages are asynchronous, so we initialize in an async method.
-//   Future<void> initPlatformState() async {
-//     String platformVersion;
-//     // Platform messages may fail, so we use a try/catch PlatformException.
-//     // We also handle the message potentially returning null.
-//     try {
-//       platformVersion =
-//           await _sharedPreferencesPlusWebPlugin.getPlatformVersion() ?? 'Unknown platform version';
-//     } on PlatformException {
-//       platformVersion = 'Failed to get platform version.';
-//     }
-
-//     // If the widget was removed from the tree while the asynchronous platform
-//     // message was in flight, we want to discard the reply rather than calling
-//     // setState to update our non-existent appearance.
-//     if (!mounted) return;
-
-//     setState(() {
-//       _platformVersion = platformVersion;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(title: const Text('Plugin example app')),
-//         body: Center(child: Text('Running on: $_platformVersion\n')),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(title: const Text('Preferences example')),
+      body: Center(
+        child: FutureBuilder<int>(
+          future: _launchCount,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Unable to load preferences.');
+            }
+            if (!snapshot.hasData) {
+              return const CircularProgressIndicator();
+            }
+            return Text('Saved launch count: ${snapshot.data}');
+          },
+        ),
+      ),
+    ),
+  );
+}

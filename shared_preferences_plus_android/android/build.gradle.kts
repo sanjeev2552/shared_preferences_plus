@@ -57,7 +57,6 @@ android {
         unitTests {
             isIncludeAndroidResources = true
             all {
-                it.useJUnitPlatform()
 
                 it.outputs.upToDateWhen { false }
 
@@ -71,6 +70,7 @@ android {
 }
 
 dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.12")
     testImplementation("org.mockito:mockito-core:5.0.0")
 }

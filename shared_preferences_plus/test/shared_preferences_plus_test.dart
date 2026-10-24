@@ -25,7 +25,8 @@ void main() {
   const customBoolValue = false;
   const customStringListValue = <String>['x', 'y', 'z'];
 
-  final SharedPreferencesPlusPlatform initialPlatform = SharedPreferencesPlusPlatform.instance;
+  final SharedPreferencesPlusPlatform initialPlatform =
+      SharedPreferencesPlusPlatform.instance;
   late FakeSharedPreferencesPlusPlatform fakePlatform;
   late SharedPreferencesPlus prefs;
 
@@ -83,7 +84,11 @@ void main() {
         ),
         isMethodCall(
           'setInt',
-          arguments: {'key': intKey, 'value': customIntValue, 'options': 'SharedPreferencesPlus'},
+          arguments: {
+            'key': intKey,
+            'value': customIntValue,
+            'options': 'SharedPreferencesPlus',
+          },
         ),
         isMethodCall(
           'setDouble',
@@ -95,7 +100,11 @@ void main() {
         ),
         isMethodCall(
           'setBool',
-          arguments: {'key': boolKey, 'value': customBoolValue, 'options': 'SharedPreferencesPlus'},
+          arguments: {
+            'key': boolKey,
+            'value': customBoolValue,
+            'options': 'SharedPreferencesPlus',
+          },
         ),
         isMethodCall(
           'setStringList',
@@ -157,7 +166,9 @@ void main() {
     expect(prefs.getKeys(), containsAll(<String>['a', 'b']));
     expect(
       fakePlatform.methodCalls.any(
-        (call) => call.method == "setInt" && call.arguments['options'] == prefs.options.name,
+        (call) =>
+            call.method == "setInt" &&
+            call.arguments['options'] == prefs.options.name,
       ),
       isTrue,
     );
@@ -173,7 +184,9 @@ void main() {
     expect(all['c'], <String>['m', 'n']);
     expect(
       fakePlatform.methodCalls.any(
-        (call) => call.method == "setStringList" && call.arguments['options'] == prefs.options.name,
+        (call) =>
+            call.method == "setStringList" &&
+            call.arguments['options'] == prefs.options.name,
       ),
       isTrue,
     );
@@ -203,15 +216,20 @@ void main() {
     expect(prefs.getKeys(), isEmpty);
     expect(
       fakePlatform.methodCalls.any(
-        (call) => call.method == "clear" && call.arguments['options'] == prefs.options.name,
+        (call) =>
+            call.method == "clear" &&
+            call.arguments['options'] == prefs.options.name,
       ),
       isTrue,
     );
   });
 
   test('options are forwarded for every method', () async {
-    final SharedPreferencesPlusOptions custom = SharedPreferencesPlusOptions(name: 'CustomPrefs');
-    final SharedPreferencesPlus customPrefs = await SharedPreferencesPlus.getInstance(options: custom);
+    final SharedPreferencesPlusOptions custom = SharedPreferencesPlusOptions(
+      name: 'CustomPrefs',
+    );
+    final SharedPreferencesPlus customPrefs =
+        await SharedPreferencesPlus.getInstance(options: custom);
     const String key = 'k';
 
     await customPrefs.setString(key, 'v');
@@ -244,19 +262,25 @@ void main() {
   });
 
   test('mocking with initialData', () async {
-    final SharedPreferencesPlusOptions custom = SharedPreferencesPlusOptions(name: 'CustomPrefs');
-    final SharedPreferencesPlus customPrefs = await SharedPreferencesPlus.getInstance(options: custom);
+    final SharedPreferencesPlusOptions custom = SharedPreferencesPlusOptions(
+      name: 'CustomPrefs',
+    );
+    final SharedPreferencesPlus customPrefs =
+        await SharedPreferencesPlus.getInstance(options: custom);
 
     final SharedPreferencesPlusOptions newCustom = SharedPreferencesPlusOptions(
       name: 'CustomPrefs',
     );
-    final SharedPreferencesPlus newCustomPrefs = await SharedPreferencesPlus.getInstance(options: newCustom);
+    final SharedPreferencesPlus newCustomPrefs =
+        await SharedPreferencesPlus.getInstance(options: newCustom);
 
     // Create mock data with default options
     SharedPreferencesPlus.setMockInitialValues({'key': 'value'});
 
     // Creating mock data with custom options should not affect the default options
-    SharedPreferencesPlus.setMockInitialValues({'key': 'otherValue'}, options: custom);
+    SharedPreferencesPlus.setMockInitialValues({
+      'key': 'otherValue',
+    }, options: custom);
 
     expect(prefs.getString("key"), equals("value"));
     expect(customPrefs.getString("key"), equals("otherValue"));
@@ -266,7 +290,9 @@ void main() {
 
 class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
   FakeSharedPreferencesPlusPlatform({Map<String, Object?>? initialData})
-    : _store = InMemorySharedPreferencesPlusPlatform.withData(initialData ?? {});
+    : _store = InMemorySharedPreferencesPlusPlatform.withData(
+        initialData ?? {},
+      );
 
   final InMemorySharedPreferencesPlusPlatform _store;
   final List<MethodCall> methodCalls = <MethodCall>[];
@@ -284,7 +310,13 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('setString', {'key': key, 'value': value, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('setString', {
+        'key': key,
+        'value': value,
+        'options': options.name,
+      }),
+    );
     await _store.setString(key, value, options: options);
   }
 
@@ -294,7 +326,9 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('getString', {'key': key, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('getString', {'key': key, 'options': options.name}),
+    );
     final value = await _store.getString(key, options: options);
     return value is String ? value : null;
   }
@@ -306,7 +340,13 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('setInt', {'key': key, 'value': value, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('setInt', {
+        'key': key,
+        'value': value,
+        'options': options.name,
+      }),
+    );
     await _store.setInt(key, value, options: options);
   }
 
@@ -316,7 +356,9 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('getInt', {'key': key, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('getInt', {'key': key, 'options': options.name}),
+    );
     final value = await _store.getInt(key, options: options);
     return value is int ? value : null;
   }
@@ -328,7 +370,13 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('setDouble', {'key': key, 'value': value, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('setDouble', {
+        'key': key,
+        'value': value,
+        'options': options.name,
+      }),
+    );
     await _store.setDouble(key, value, options: options);
   }
 
@@ -338,7 +386,9 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('getDouble', {'key': key, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('getDouble', {'key': key, 'options': options.name}),
+    );
     final value = await _store.getDouble(key, options: options);
     return value is double ? value : null;
   }
@@ -350,7 +400,13 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('setBool', {'key': key, 'value': value, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('setBool', {
+        'key': key,
+        'value': value,
+        'options': options.name,
+      }),
+    );
     await _store.setBool(key, value, options: options);
   }
 
@@ -360,7 +416,9 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('getBool', {'key': key, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('getBool', {'key': key, 'options': options.name}),
+    );
     final value = await _store.getBool(key, options: options);
     return value is bool ? value : null;
   }
@@ -388,7 +446,9 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('getStringList', {'key': key, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('getStringList', {'key': key, 'options': options.name}),
+    );
     final value = await _store.getStringList(key, options: options);
     return value;
   }
@@ -399,7 +459,9 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('remove', {'key': key, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('remove', {'key': key, 'options': options.name}),
+    );
     await _store.remove(key, options: options);
   }
 
@@ -418,7 +480,9 @@ class FakeSharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
     _record(options);
-    methodCalls.add(MethodCall('containsKey', {'key': key, 'options': options.name}));
+    methodCalls.add(
+      MethodCall('containsKey', {'key': key, 'options': options.name}),
+    );
     return await _store.containsKey(key, options: options);
   }
 

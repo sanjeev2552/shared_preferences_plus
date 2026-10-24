@@ -1,3 +1,10 @@
+## 1.1.0
+
+- Preserve double identity, normalize decoded lists and scope reads/clear to the named persistent domain.
+- Correct Pigeon channel names and include the UserDefaults privacy manifest through CocoaPods and Swift Package Manager.
+- Refresh pod metadata and add codec, native storage and restart coverage.
+- Require Flutter 3.41.4+ / Dart 3.11.1+ and resolve local development through the Pub workspace.
+
 ## 1.0.6
 
 - Fixes in swift package manager setup

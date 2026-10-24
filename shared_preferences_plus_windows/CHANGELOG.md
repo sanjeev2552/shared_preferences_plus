@@ -1,3 +1,10 @@
+## 1.1.0
+
+- Use shared atomic file transactions and Windows handle locks across isolates and processes.
+- Migrate safe legacy filenames to hashed container paths while preserving backups.
+- Preserve corrupt files and support explicit recovery with clear; add platform-contract tests.
+- Require Flutter 3.41.4+ / Dart 3.11.1+ and resolve local development through the Pub workspace.
+
 ## 1.0.1
 
 * Update package-level Dart documentation.

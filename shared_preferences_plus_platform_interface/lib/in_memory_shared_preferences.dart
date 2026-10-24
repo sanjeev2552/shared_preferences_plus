@@ -1,21 +1,33 @@
 import 'package:shared_preferences_plus_platform_interface/shared_preferences_plus_platform_interface_platform_interface.dart';
 import 'package:shared_preferences_plus_platform_interface/types.dart';
+import 'preferences_values.dart';
 
 /// Simple in-memory implementation intended for tests.
-class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatform {
+class InMemorySharedPreferencesPlusPlatform
+    extends SharedPreferencesPlusPlatform {
   /// Creates an in-memory instance seeded with [initialValues].
   static InMemorySharedPreferencesPlusPlatform withData(
     Map<String, Object?> initialValues, {
     String? name,
   }) {
-    _storeByName[name ?? 'SharedPreferencesPlus'] = initialValues;
-    return InMemorySharedPreferencesPlusPlatform();
+    return InMemorySharedPreferencesPlusPlatform()
+      ..setInitialValues(initialValues, name: name);
   }
 
-  static final Map<String, Map<String, Object?>> _storeByName = <String, Map<String, Object?>>{};
+  final Map<String, Map<String, Object?>> _storeByName =
+      <String, Map<String, Object?>>{};
+
+  /// Replaces one namespace with a detached snapshot.
+  void setInitialValues(Map<String, Object?> values, {String? name}) {
+    _storeByName[SharedPreferencesPlusOptions(name: name).storageName] =
+        copyPreferences(values);
+  }
+
+  /// Clears every namespace owned by this mock instance.
+  void reset() => _storeByName.clear();
 
   String _bucketName(SharedPreferencesPlusOptions options) {
-    return options.name ?? 'SharedPreferencesPlus';
+    return options.storageName;
   }
 
   Map<String, Object?> _bucket(SharedPreferencesPlusOptions options) {
@@ -162,13 +174,6 @@ class InMemorySharedPreferencesPlusPlatform extends SharedPreferencesPlusPlatfor
   Future<Map<String, Object>> getAll({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final bucket = _bucket(options);
-    return Map<String, Object>.fromEntries(
-      bucket.entries
-          .where((MapEntry<String, Object?> entry) => entry.value != null)
-          .map(
-            (MapEntry<String, Object?> entry) => MapEntry<String, Object>(entry.key, entry.value!),
-          ),
-    );
+    return copyPreferences(_bucket(options));
   }
 }

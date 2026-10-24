@@ -4,6 +4,10 @@ description: "Demonstrates how to use the shared_preferences_plus_foundation plu
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
+version: 1.1.0+1
+
+resolution: workspace
+
 environment:
   sdk: ^3.11.1
 

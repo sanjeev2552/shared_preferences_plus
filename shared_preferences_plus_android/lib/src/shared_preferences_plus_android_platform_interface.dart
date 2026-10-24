@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences_plus_android/src/messages.g.dart';
 import 'package:shared_preferences_plus_platform_interface/shared_preferences_plus_platform_interface.dart';
 
@@ -8,12 +7,14 @@ import 'package:shared_preferences_plus_platform_interface/shared_preferences_pl
 /// registers itself with the shared platform interface.
 class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
   final SharedPreferencesPlusApi _api;
-  static const String _stringListSeparator = "/0001u";
 
   /// Creates an Android-backed shared preferences implementation.
   SharedPreferencesPlusAndroid({SharedPreferencesPlusApi? api})
     : _api =
-          api ?? SharedPreferencesPlusApi(messageChannelSuffix: 'shared_preferences_plus_android');
+          api ??
+          SharedPreferencesPlusApi(
+            messageChannelSuffix: 'shared_preferences_plus_android',
+          );
 
   /// Registers this implementation as the default platform instance.
   static void registerWith() {
@@ -26,8 +27,10 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    debugPrint('Getting string: key=$key, options=${options.name}');
-    return _api.getString(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.getString(
+      key,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -37,8 +40,11 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    debugPrint('Setting string: key=$key, value=$value, options=${options.name}');
-    return _api.setString(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.setString(
+      key,
+      value,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -48,7 +54,11 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     int value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.setInt(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.setInt(
+      key,
+      value,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -57,7 +67,10 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value = await _api.getInt(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    final value = await _api.getInt(
+      key,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
     return value;
   }
 
@@ -68,7 +81,11 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     double value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.setDouble(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.setDouble(
+      key,
+      value,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -77,7 +94,10 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.getDouble(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.getDouble(
+      key,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -87,7 +107,11 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     bool value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.setBool(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.setBool(
+      key,
+      value,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -96,7 +120,10 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.getBool(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.getBool(
+      key,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -106,7 +133,11 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     List<String> value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.setStringList(key, value, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.setStringList(
+      key,
+      value,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -115,7 +146,10 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value = await _api.getStringList(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    final value = await _api.getStringList(
+      key,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
     return value;
   }
 
@@ -125,7 +159,10 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.remove(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.remove(
+      key,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -133,7 +170,9 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
   Future<void> clear({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.clear(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.clear(
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -142,7 +181,10 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return _api.containsKey(key, SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    return _api.containsKey(
+      key,
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
   }
 
   @override
@@ -150,7 +192,9 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
   Future<Set<String>> getKeys({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final keys = await _api.getKeys(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    final keys = await _api.getKeys(
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
     return keys.toSet();
   }
 
@@ -159,7 +203,9 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
   Future<Map<String, Object>> getAll({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final all = await _api.getAll(SharedPreferencesPlusPigeonOptions(name: options.name ?? ''));
+    final all = await _api.getAll(
+      SharedPreferencesPlusPigeonOptions(name: options.storageName),
+    );
     final Map<String, Object> result = {};
     for (final MapEntry<String, Object?> entry in all.entries) {
       final Object? value = entry.value;
@@ -167,11 +213,7 @@ class SharedPreferencesPlusAndroid extends SharedPreferencesPlusPlatform {
         continue;
       }
       if (value is List && value.every((Object? item) => item is String)) {
-        result[entry.key] = value.cast<String>();
-        continue;
-      }
-      if (value is String && value.contains(_stringListSeparator)) {
-        result[entry.key] = value.split(_stringListSeparator);
+        result[entry.key] = List<String>.from(value);
         continue;
       }
       result[entry.key] = value;

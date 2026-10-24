@@ -1,215 +1,189 @@
-import 'dart:convert';
+import 'dart:js_interop';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:shared_preferences_plus_platform_interface/preferences_codec.dart';
 import 'package:shared_preferences_plus_platform_interface/shared_preferences_plus_platform_interface.dart';
 import 'package:web/web.dart' as web;
 
-/// Web-backed implementation of [SharedPreferencesPlusPlatform].
-///
-/// Stores preferences in `window.localStorage`.
+/// Web preferences backed by explicitly typed, versioned localStorage values.
 class SharedPreferencesPlusWeb extends SharedPreferencesPlusPlatform {
-  /// Creates a web shared preferences implementation.
-  SharedPreferencesPlusWeb();
+  /// Creates an implementation with optional injectable storage.
+  SharedPreferencesPlusWeb({PreferencesWebStorage? storage})
+    : _storage = storage ?? BrowserPreferencesWebStorage();
+  final PreferencesWebStorage _storage;
+  String _name(SharedPreferencesPlusOptions options) => options.storageName;
 
-  Map<String, Object?> _readMap(SharedPreferencesPlusOptions options) {
-    final currentValue = web.window.localStorage.getItem(options.name ?? '');
-    if (currentValue == null) {
-      return <String, Object?>{};
-    }
-    final Map<String, dynamic> decoded = jsonDecode(currentValue) as Map<String, dynamic>;
-    return decoded;
-  }
-
-  void _writeMap(SharedPreferencesPlusOptions options, Map<String, Object?> map) {
-    web.window.localStorage.setItem(options.name ?? '', jsonEncode(map));
-  }
-
-  /// Registers this implementation as the default platform instance.
+  /// Registers this implementation.
   static void registerWith(Registrar registrar) {
     SharedPreferencesPlusPlatform.instance = SharedPreferencesPlusWeb();
   }
 
-  @override
-  /// Reads a string value for [key].
-  Future<String?> getString(
-    String key, {
-    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    final Object? value = decoded[key];
-    return Future.value(value is String ? value : null);
+  T _access<T>(T Function() operation) {
+    try {
+      return operation();
+    } catch (error) {
+      if (error is Error || error is Exception) rethrow;
+      final jsError = error as JSAny;
+      if (!jsError.isA<web.DOMException>()) rethrow;
+      final exception = jsError as web.DOMException;
+      throw PlatformException(
+        code: exception.name == 'QuotaExceededError'
+            ? 'storage-full'
+            : 'storage-unavailable',
+        message:
+            'Browser preferences storage is unavailable (${exception.name}).',
+      );
+    }
+  }
+
+  DecodedPreferences _read(SharedPreferencesPlusOptions options) {
+    final value = _access(() => _storage.read(_name(options)));
+    return value == null
+        ? DecodedPreferences({}, {})
+        : PreferencesCodec.decodeData(value);
+  }
+
+  void _write(SharedPreferencesPlusOptions options, DecodedPreferences data) {
+    final encoded = PreferencesCodec.encode(data.values, types: data.types);
+    _access(() => _storage.write(_name(options), encoded));
+  }
+
+  Future<void> _set(
+    String key,
+    Object value,
+    String type,
+    SharedPreferencesPlusOptions options,
+  ) async {
+    final data = _read(options);
+    data.values[key] = value;
+    data.types[key] = type;
+    _write(options, data);
+  }
+
+  Object? _get(String key, String type, SharedPreferencesPlusOptions options) {
+    final data = _read(options);
+    return data.types[key] == type ? data.values[key] : null;
   }
 
   @override
-  /// Persists a string [value] for [key].
   Future<void> setString(
     String key,
     String value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    decoded[key] = value;
-    _writeMap(options, decoded);
-    return Future.value();
-  }
-
+  }) => _set(key, value, 'string', options);
   @override
-  /// Persists an integer [value] for [key].
   Future<void> setInt(
     String key,
     int value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    decoded[key] = value;
-    _writeMap(options, decoded);
-    return Future.value();
+  }) async {
+    if (value < -9007199254740991 || value > 9007199254740991) {
+      throw ArgumentError.value(
+        value,
+        'value',
+        'Web integers must be within the JavaScript safe integer range',
+      );
+    }
+    await _set(key, value, 'int', options);
   }
 
   @override
-  /// Reads an integer value for [key].
-  Future<int?> getInt(
-    String key, {
-    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    final Object? value = decoded[key];
-    return Future.value(value is int ? value : null);
-  }
-
-  @override
-  /// Persists a double [value] for [key].
   Future<void> setDouble(
     String key,
     double value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    decoded[key] = value;
-    _writeMap(options, decoded);
-    return Future.value();
-  }
-
+  }) => _set(key, value, 'double', options);
   @override
-  /// Reads a double value for [key].
-  Future<double?> getDouble(
-    String key, {
-    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    final Object? value = decoded[key];
-    return Future.value(value is double ? value : null);
-  }
-
-  @override
-  /// Persists a boolean [value] for [key].
   Future<void> setBool(
     String key,
     bool value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    decoded[key] = value;
-    _writeMap(options, decoded);
-    return Future.value();
-  }
-
+  }) => _set(key, value, 'bool', options);
   @override
-  /// Reads a boolean value for [key].
-  Future<bool?> getBool(
-    String key, {
-    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    final Object? value = decoded[key];
-    return Future.value(value is bool ? value : null);
-  }
-
-  @override
-  /// Persists a string list [value] for [key].
   Future<void> setStringList(
     String key,
     List<String> value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    decoded[key] = value;
-    _writeMap(options, decoded);
-    return Future.value();
-  }
-
+  }) => _set(key, List<String>.from(value), 'list', options);
   @override
-  /// Reads a string list for [key].
+  Future<String?> getString(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async => _get(key, 'string', options) as String?;
+  @override
+  Future<int?> getInt(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async => _get(key, 'int', options) as int?;
+  @override
+  Future<double?> getDouble(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async => _get(key, 'double', options) as double?;
+  @override
+  Future<bool?> getBool(
+    String key, {
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async => _get(key, 'bool', options) as bool?;
+  @override
   Future<List<String>?> getStringList(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    final Object? value = decoded[key];
-    if (value is List && value.every((Object? item) => item is String)) {
-      return Future.value(value.cast<String>());
-    }
-    return Future.value(null);
-  }
-
+  }) async => _get(key, 'list', options) as List<String>?;
   @override
-  /// Removes the preference for [key].
   Future<void> remove(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    decoded.remove(key);
-    _writeMap(options, decoded);
-    return Future.value();
+  }) async {
+    final data = _read(options);
+    data.values.remove(key);
+    data.types.remove(key);
+    _write(options, data);
   }
 
   @override
-  /// Clears all preferences for the configured [options].
   Future<void> clear({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    web.window.localStorage.removeItem(options.name ?? '');
-    return Future.value();
-  }
-
+  }) async => _access(() => _storage.remove(_name(options)));
   @override
-  /// Returns whether a value exists for [key].
   Future<bool> containsKey(
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    return Future.value(decoded.containsKey(key));
-  }
-
+  }) async => _read(options).values.containsKey(key);
   @override
-  /// Returns all stored keys for the configured [options].
   Future<Set<String>> getKeys({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    return Future.value(decoded.keys.toSet());
-  }
-
+  }) async => _read(options).values.keys.toSet();
   @override
-  /// Returns all stored key-value pairs for the configured [options].
+  Future<PreferencesSnapshot> getSnapshot({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) async => _read(options);
+  @override
   Future<Map<String, Object>> getAll({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
-  }) {
-    final Map<String, Object?> decoded = _readMap(options);
-    final Map<String, Object> result = {};
-    for (final MapEntry<String, Object?> entry in decoded.entries) {
-      final Object? value = entry.value;
-      if (value == null) {
-        continue;
-      }
-      if (value is List && value.every((Object? item) => item is String)) {
-        result[entry.key] = value.cast<String>();
-        continue;
-      }
-      result[entry.key] = value;
-    }
-    return Future.value(result);
-  }
+  }) async => _read(options).values;
+}
+
+/// Minimal injectable browser storage contract.
+abstract interface class PreferencesWebStorage {
+  /// Reads a container.
+  String? read(String name);
+
+  /// Replaces a container.
+  void write(String name, String value);
+
+  /// Deletes a container.
+  void remove(String name);
+}
+
+/// Accesses localStorage lazily so unavailable storage fails through operation Futures.
+class BrowserPreferencesWebStorage implements PreferencesWebStorage {
+  @override
+  String? read(String name) => web.window.localStorage.getItem(name);
+  @override
+  void write(String name, String value) =>
+      web.window.localStorage.setItem(name, value);
+  @override
+  void remove(String name) => web.window.localStorage.removeItem(name);
 }

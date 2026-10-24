@@ -1,13 +1,15 @@
 name: shared_preferences_plus
 description: "A Flutter plugin for reading and writing key-value pairs with named containers."
-version: 1.0.6
+version: 1.1.0
 homepage: https://github.com/sanjeev2552/shared_preferences_plus
 repository: https://github.com/sanjeev2552/shared_preferences_plus
 issue_tracker: https://github.com/sanjeev2552/shared_preferences_plus/issues
 
+resolution: workspace
+
 environment:
   sdk: ^3.11.1
-  flutter: ">=3.3.0"
+  flutter: ">=3.41.4"
 
 flutter:
   plugin:
@@ -28,14 +30,16 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences_plus_android: ^1.0.1
-  shared_preferences_plus_foundation: ^1.0.6
-  shared_preferences_plus_linux: ^1.0.1
-  shared_preferences_plus_web: ^1.0.1
-  shared_preferences_plus_windows: ^1.0.1
-  shared_preferences_plus_platform_interface: ^1.0.1
+  shared_preferences_plus_android: ^1.1.0
+  shared_preferences_plus_foundation: ^1.1.0
+  shared_preferences_plus_linux: ^1.1.0
+  shared_preferences_plus_web: ^1.1.0
+  shared_preferences_plus_windows: ^1.1.0
+  shared_preferences_plus_platform_interface: ^1.1.0
 
 dev_dependencies:
+  shared_preferences_plus_test_support:
+    path: ../test_support
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0

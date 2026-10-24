@@ -1,0 +1,107 @@
+name: Validate packages
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.4'
+          cache: true
+      - run: flutter pub get
+      - run: dart run tool/check.dart
+      - if: runner.os == 'Linux'
+        run: dart run tool/check_generated.dart
+      - if: runner.os == 'Linux'
+        run: dart run tool/check_publish.dart
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.4'
+          cache: true
+      - run: flutter pub get
+      - run: dart run tool/check.dart --web
+      - run: flutter build web --no-pub
+        working-directory: shared_preferences_plus/example
+
+  desktop-integration:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            device: linux
+          - os: windows-latest
+            device: windows
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.4'
+          cache: true
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev g++ xvfb
+      - run: flutter pub get
+      - if: runner.os == 'Linux'
+        run: xvfb-run -a dart run tool/check.dart --integration linux
+      - if: runner.os == 'Windows'
+        run: dart run tool/check.dart --integration windows
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.4'
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --debug --no-pub
+        working-directory: shared_preferences_plus_android/example
+      - run: chmod +x gradlew && ./gradlew :shared_preferences_plus_android:testDebugUnitTest
+        working-directory: shared_preferences_plus_android/example/android
+      - name: Enable emulator acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: x86_64
+          script: dart run tool/check.dart --integration emulator-5554
+
+  apple:
+    strategy:
+      fail-fast: false
+      matrix:
+        manager: [pods, spm]
+        platform: [macos, ios]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.4'
+          cache: true
+      - run: flutter pub get
+      - run: dart run tool/build_apple.dart ${{ matrix.manager }} ${{ matrix.platform }} --integration

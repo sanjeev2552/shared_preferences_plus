@@ -12,7 +12,7 @@ A Flutter plugin for reading and writing key-value pairs to persistent storage w
 
 ```yaml
 dependencies:
-  shared_preferences_plus: ^1.0.0
+  shared_preferences_plus: ^1.1.0
 ```
 
 ## Usage
@@ -63,6 +63,39 @@ final appTheme = appPrefs.getString('theme');   // 'v2'
 ```
 
 > If no `name` is provided, the default container name `SharedPreferencesPlus` is used.
+
+## Cache and storage behavior
+
+Operations run in call order per container within an isolate. Writes update the
+cache only after the platform operation succeeds. Input lists, returned lists and
+`getAll()` snapshots are detached copies.
+
+```dart
+await prefs.reload(); // Observe changes made by another isolate, process or tab.
+final keys = prefs.getKeys();
+final exists = prefs.containsKey('counter');
+await prefs.remove('counter');
+await prefs.clear(); // Clears only this named container.
+```
+
+Container names must contain 1–128 UTF-8 bytes, without path separators or NUL,
+and cannot be `.` or `..`. The default name remains `SharedPreferencesPlus`.
+Web integers must fit the JavaScript safe integer range. Different browser tabs
+need application-level coordination for concurrent writes.
+
+Requires Flutter 3.41.4+ and Dart 3.11.1+. Android requires API 24+, iOS 13+,
+and macOS 10.15+. The repository examples use newer Apple deployment targets
+for current Xcode compatibility.
+
+Native preference writes can flush asynchronously; a completed setter does not
+guarantee survival after sudden power loss. Preferences are unencrypted and are
+intended for configuration rather than secrets or critical records.
+
+Version 1.1.0 reads legacy storage and uses typed encodings for new writes.
+See the repository's [migration guide](https://github.com/sanjeev2552/shared_preferences_plus/blob/main/MIGRATION.md)
+for ambiguous legacy Android lists, desktop backup files, corruption recovery,
+and downgrade limitations. See [development instructions](https://github.com/sanjeev2552/shared_preferences_plus/blob/main/DEVELOPMENT.md)
+for shared tests, native builds and restart checks.
 
 ## Support
 

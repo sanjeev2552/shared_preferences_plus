@@ -24,8 +24,17 @@ A Flutter plugin for reading and writing key-value pairs to persistent storage w
 | iOS | ✅ | NSUserDefaults |
 | macOS | ✅ | NSUserDefaults |
 | Web | ✅ | localStorage |
-| Linux | ✅ | local JSON file (`path_provider_linux`) |
-| Windows | ✅ | local JSON file (`path_provider_windows`) |
+| Linux | ✅ | Atomic JSON file with OS locking (`path_provider_linux`) |
+| Windows | ✅ | Atomic JSON file with OS locking (`path_provider_windows`) |
+
+## Development and migration
+
+The packages and examples share one Pub workspace and root lockfile. Start with
+`flutter pub get`, then `dart run tool/check.dart`. Browser checks run with
+`dart run tool/check.dart --web`.
+
+See [DEVELOPMENT.md](DEVELOPMENT.md) for native/restart checks and release order,
+and [MIGRATION.md](MIGRATION.md) for storage compatibility and recovery details.
 
 ## Contributing
 

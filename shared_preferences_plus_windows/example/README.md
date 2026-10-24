@@ -1,17 +1,10 @@
-# shared_preferences_plus_windows_example
+# shared_preferences_plus_windows example
 
-Demonstrates how to use the shared_preferences_plus_windows plugin.
+This project demonstrates the platform package. The supported public API and
+complete multi-platform integration suite live in
+[the app-facing example](../../shared_preferences_plus/example).
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Run the platform package's Dart tests from the repository root with
+`dart run tool/check.dart`. See [DEVELOPMENT.md](../../DEVELOPMENT.md) for browser,
+native, dependency-manager and separate-process restart checks. Obsolete template
+tests have been removed; platform contracts are shared by the real package suites.

@@ -5,17 +5,22 @@ import 'package:shared_preferences_plus_platform_interface/types.dart';
 import 'shared_preferences_plus_platform_interface_platform_interface.dart';
 
 /// An implementation of [SharedPreferencesPlusPlatform] that uses method channels.
-class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferencesPlusPlatform {
+class MethodChannelSharedPreferencesPlusPlatformInterface
+    extends SharedPreferencesPlusPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('shared_preferences_plus_platform_interface');
+  final methodChannel = const MethodChannel(
+    'shared_preferences_plus_platform_interface',
+  );
 
   Map<String, Object?> _argsWithOptions(
     SharedPreferencesPlusOptions options, {
     String? key,
     Object? value,
   }) {
-    final Map<String, Object?> args = <String, Object?>{'options': options.name};
+    final Map<String, Object?> args = <String, Object?>{
+      'options': options.storageName,
+    };
     if (key != null) {
       args['key'] = key;
     }
@@ -32,7 +37,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return methodChannel.invokeMethod<void>('setString', _argsWithOptions(options, key: key, value: value));
+    return methodChannel.invokeMethod<void>(
+      'setString',
+      _argsWithOptions(options, key: key, value: value),
+    );
   }
 
   @override
@@ -41,7 +49,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return methodChannel.invokeMethod<String>('getString', _argsWithOptions(options, key: key));
+    return methodChannel.invokeMethod<String>(
+      'getString',
+      _argsWithOptions(options, key: key),
+    );
   }
 
   @override
@@ -51,7 +62,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     int value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return methodChannel.invokeMethod<void>('setInt', _argsWithOptions(options, key: key, value: value));
+    return methodChannel.invokeMethod<void>(
+      'setInt',
+      _argsWithOptions(options, key: key, value: value),
+    );
   }
 
   @override
@@ -60,8 +74,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value =
-        await methodChannel.invokeMethod<Object?>('getInt', _argsWithOptions(options, key: key));
+    final value = await methodChannel.invokeMethod<Object?>(
+      'getInt',
+      _argsWithOptions(options, key: key),
+    );
     return value is int ? value : null;
   }
 
@@ -72,7 +88,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     double value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return methodChannel.invokeMethod<void>('setDouble', _argsWithOptions(options, key: key, value: value));
+    return methodChannel.invokeMethod<void>(
+      'setDouble',
+      _argsWithOptions(options, key: key, value: value),
+    );
   }
 
   @override
@@ -81,8 +100,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value =
-        await methodChannel.invokeMethod<Object?>('getDouble', _argsWithOptions(options, key: key));
+    final value = await methodChannel.invokeMethod<Object?>(
+      'getDouble',
+      _argsWithOptions(options, key: key),
+    );
     return value is double ? value : null;
   }
 
@@ -93,7 +114,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     bool value, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return methodChannel.invokeMethod<void>('setBool', _argsWithOptions(options, key: key, value: value));
+    return methodChannel.invokeMethod<void>(
+      'setBool',
+      _argsWithOptions(options, key: key, value: value),
+    );
   }
 
   @override
@@ -102,8 +126,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value =
-        await methodChannel.invokeMethod<Object?>('getBool', _argsWithOptions(options, key: key));
+    final value = await methodChannel.invokeMethod<Object?>(
+      'getBool',
+      _argsWithOptions(options, key: key),
+    );
     return value is bool ? value : null;
   }
 
@@ -126,8 +152,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value =
-        await methodChannel.invokeMethod<Object?>('getStringList', _argsWithOptions(options, key: key));
+    final value = await methodChannel.invokeMethod<Object?>(
+      'getStringList',
+      _argsWithOptions(options, key: key),
+    );
     if (value is List) {
       if (value.every((Object? item) => item is String)) {
         return value.cast<String>();
@@ -142,7 +170,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) {
-    return methodChannel.invokeMethod<void>('remove', _argsWithOptions(options, key: key));
+    return methodChannel.invokeMethod<void>(
+      'remove',
+      _argsWithOptions(options, key: key),
+    );
   }
 
   @override
@@ -159,8 +190,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
     String key, {
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value =
-        await methodChannel.invokeMethod<Object?>('containsKey', _argsWithOptions(options, key: key));
+    final value = await methodChannel.invokeMethod<Object?>(
+      'containsKey',
+      _argsWithOptions(options, key: key),
+    );
     return value is bool ? value : false;
   }
 
@@ -169,7 +202,10 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
   Future<Set<String>> getKeys({
     SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
   }) async {
-    final value = await methodChannel.invokeMethod<Object?>('getKeys', _argsWithOptions(options));
+    final value = await methodChannel.invokeMethod<Object?>(
+      'getKeys',
+      _argsWithOptions(options),
+    );
     if (value is List && value.every((Object? item) => item is String)) {
       return value.cast<String>().toSet();
     }
@@ -178,22 +214,27 @@ class MethodChannelSharedPreferencesPlusPlatformInterface extends SharedPreferen
 
   @override
   /// Returns all stored key-value pairs for the configured [options].
-  Future<Map<String, Object>> getAll({SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions()}) {
-    return methodChannel.invokeMethod<Map<Object?, Object>>('getAll', _argsWithOptions(options)).then((value) {
-      if (value == null) {
-        return <String, Object>{};
-      }
-      final Map<String, Object> result = {};
-      value.forEach((Object? key, Object? value) {
-        if (key is String && value != null) {
-          if (value is List && value.every((Object? item) => item is String)) {
-            result[key] = value.cast<String>();
-          } else {
-            result[key] = value;
+  Future<Map<String, Object>> getAll({
+    SharedPreferencesPlusOptions options = const SharedPreferencesPlusOptions(),
+  }) {
+    return methodChannel
+        .invokeMethod<Map<Object?, Object>>('getAll', _argsWithOptions(options))
+        .then((value) {
+          if (value == null) {
+            return <String, Object>{};
           }
-        }
-      });
-      return result;
-    });
+          final Map<String, Object> result = {};
+          value.forEach((Object? key, Object? value) {
+            if (key is String && value != null) {
+              if (value is List &&
+                  value.every((Object? item) => item is String)) {
+                result[key] = value.cast<String>();
+              } else {
+                result[key] = value;
+              }
+            }
+          });
+          return result;
+        });
   }
 }

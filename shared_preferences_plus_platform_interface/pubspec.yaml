@@ -1,20 +1,27 @@
 name: shared_preferences_plus_platform_interface
 description: "Platform interface for shared_preferences_plus."
-version: 1.0.1
+version: 1.1.0
 homepage: https://github.com/sanjeev2552/shared_preferences_plus
 repository: https://github.com/sanjeev2552/shared_preferences_plus
 issue_tracker: https://github.com/sanjeev2552/shared_preferences_plus/issues
 
+resolution: workspace
+
 environment:
   sdk: ^3.11.1
-  flutter: ">=3.3.0"
+  flutter: ">=3.41.4"
 
 dependencies:
+  crypto: ^3.0.7
+  ffi: ^2.1.4
+  path: ^1.9.1
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:
+  shared_preferences_plus_test_support:
+    path: ../test_support
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0

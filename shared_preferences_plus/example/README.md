@@ -1,17 +1,19 @@
-# shared_preferences_plus_example
+# Shared Preferences Plus example
 
-Demonstrates how to use the shared_preferences_plus plugin.
+This application demonstrates cached reads, writes and isolated named containers
+on Android, iOS, macOS, Linux, Windows and Web.
 
-## Getting Started
+From the repository root:
 
-This project is a starting point for a Flutter application.
+```sh
+flutter pub get
+cd shared_preferences_plus/example
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The integration suite checks all supported value types, reload behavior, concurrent
+writes and container isolation. Run the separate-process restart checks using
+`dart run tool/check.dart --integration <device-id>` from the repository root.
+See [DEVELOPMENT.md](../../DEVELOPMENT.md) for browser tests, Apple dependency
+managers, native tests and CI. See [MIGRATION.md](../../MIGRATION.md) before
+upgrading an application with existing preferences.

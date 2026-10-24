@@ -1,29 +1,19 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences_plus_platform_interface/shared_preferences_plus_platform_interface.dart';
-import 'package:shared_preferences_plus_platform_interface/shared_preferences_plus_platform_interface_method_channel.dart';
-import 'package:shared_preferences_plus_platform_interface/shared_preferences_plus_platform_interface_platform_interface.dart';
-
-// class MockSharedPreferencesPlusPlatformInterfacePlatform
-//     with MockPlatformInterfaceMixin
-//     implements SharedPreferencesPlusPlatform {
-//   @override
-//   Future<String?> getPlatformVersion() => Future.value('42');
-// }
+import 'package:shared_preferences_plus_test_support/platform_contract.dart';
 
 void main() {
-  final SharedPreferencesPlusPlatform initialPlatform = SharedPreferencesPlusPlatform.instance;
-
-  test('$MethodChannelSharedPreferencesPlusPlatformInterface is the default instance', () {
-    expect(initialPlatform, isInstanceOf<MethodChannelSharedPreferencesPlusPlatformInterface>());
-  });
-
-  test('getPlatformVersion', () async {
-    // SharedPreferencesPlusPlatformInterface sharedPreferencesPlusPlatformInterfacePlugin =
-    //     SharedPreferencesPlusPlatformInterface();
-    // MockSharedPreferencesPlusPlatformInterfacePlatform fakePlatform =
-    //     MockSharedPreferencesPlusPlatformInterfacePlatform();
-    // SharedPreferencesPlusPlatform.instance = fakePlatform;
-
-    // expect(await sharedPreferencesPlusPlatformInterfacePlugin.getPlatformVersion(), '42');
+  platformContract(() async => InMemorySharedPreferencesPlusPlatform());
+  test('mock instances and seed values are isolated', () async {
+    final seed = <String, Object?>{
+      'list': ['a'],
+    };
+    final first = InMemorySharedPreferencesPlusPlatform.withData(seed);
+    final second = InMemorySharedPreferencesPlusPlatform();
+    (seed['list'] as List<String>).add('b');
+    expect(await first.getStringList('list'), ['a']);
+    expect(await second.getAll(), isEmpty);
+    first.reset();
+    expect(await first.getAll(), isEmpty);
   });
 }

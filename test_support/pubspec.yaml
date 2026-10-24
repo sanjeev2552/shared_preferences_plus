@@ -1,0 +1,11 @@
+name: shared_preferences_plus_test_support
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ^3.11.1
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  shared_preferences_plus_platform_interface: ^1.1.0

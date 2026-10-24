@@ -214,7 +214,7 @@ class SharedPreferencesPlusApiSetup {
   /// Sets up an instance of `SharedPreferencesPlusApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: SharedPreferencesPlusApi?, messageChannelSuffix: String = "") {
     let channelSuffix = messageChannelSuffix.count > 0 ? ".\(messageChannelSuffix)" : ""
-    let setStringChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setStringChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setStringChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -231,7 +231,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       setStringChannel.setMessageHandler(nil)
     }
-    let getStringChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getStringChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getStringChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -247,7 +247,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       getStringChannel.setMessageHandler(nil)
     }
-    let setIntChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setIntChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setIntChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -264,7 +264,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       setIntChannel.setMessageHandler(nil)
     }
-    let getIntChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getIntChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getIntChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -280,7 +280,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       getIntChannel.setMessageHandler(nil)
     }
-    let setDoubleChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setDoubleChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setDoubleChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -297,7 +297,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       setDoubleChannel.setMessageHandler(nil)
     }
-    let getDoubleChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getDoubleChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getDoubleChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -313,7 +313,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       getDoubleChannel.setMessageHandler(nil)
     }
-    let setBoolChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setBoolChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setBoolChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -330,7 +330,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       setBoolChannel.setMessageHandler(nil)
     }
-    let getBoolChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getBoolChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getBoolChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -346,7 +346,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       getBoolChannel.setMessageHandler(nil)
     }
-    let setStringListChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.setStringList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setStringListChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.setStringList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setStringListChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -363,7 +363,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       setStringListChannel.setMessageHandler(nil)
     }
-    let getStringListChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getStringList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getStringListChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getStringList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getStringListChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -379,7 +379,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       getStringListChannel.setMessageHandler(nil)
     }
-    let removeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.remove\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let removeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.remove\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       removeChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -395,7 +395,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       removeChannel.setMessageHandler(nil)
     }
-    let clearChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.clear\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let clearChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.clear\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       clearChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -410,7 +410,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       clearChannel.setMessageHandler(nil)
     }
-    let containsKeyChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.containsKey\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let containsKeyChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.containsKey\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       containsKeyChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -426,7 +426,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       containsKeyChannel.setMessageHandler(nil)
     }
-    let getKeysChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getKeys\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getKeysChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getKeys\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getKeysChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -441,7 +441,7 @@ class SharedPreferencesPlusApiSetup {
     } else {
       getKeysChannel.setMessageHandler(nil)
     }
-    let getAllChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_android.SharedPreferencesPlusApi.getAll\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getAllChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.shared_preferences_plus_foundation.SharedPreferencesPlusApi.getAll\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getAllChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]

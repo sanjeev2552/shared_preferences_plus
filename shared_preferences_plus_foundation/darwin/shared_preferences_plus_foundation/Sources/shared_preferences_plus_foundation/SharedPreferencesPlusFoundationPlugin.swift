@@ -8,7 +8,7 @@ import Foundation
 
 public class SharedPreferencesPlusFoundationPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
-        var preferencesHandler = SharedPreferencesPlusApiHandler()
+        let preferencesHandler = SharedPreferencesPlusApiHandler()
         
         #if os(iOS)
             let messenger = registrar.messenger()

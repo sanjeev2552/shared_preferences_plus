@@ -10,7 +10,7 @@ void main() {
     final fakeApi = FakeSharedPreferencesPlusApi()
       ..allResult = <String, Object?>{
         'string': 'value',
-        'listEncoded': 'a/0001ub/0001uc',
+        'delimiterString': 'a/0001ub/0001uc',
         'listRaw': <String>['x', 'y'],
       };
 
@@ -18,12 +18,13 @@ void main() {
 
     final result = await platform.getAll();
     expect(result['string'], 'value');
-    expect(result['listEncoded'], <String>['a', 'b', 'c']);
+    expect(result['delimiterString'], 'a/0001ub/0001uc');
     expect(result['listRaw'], <String>['x', 'y']);
   });
 
   test('getKeys returns a Set and forwards options', () async {
-    final fakeApi = FakeSharedPreferencesPlusApi()..keysResult = <String>['a', 'b'];
+    final fakeApi = FakeSharedPreferencesPlusApi()
+      ..keysResult = <String>['a', 'b'];
     final platform = SharedPreferencesPlusAndroid(api: fakeApi);
     const options = SharedPreferencesPlusOptions(name: 'CustomPrefs');
 
@@ -56,19 +57,26 @@ class FakeSharedPreferencesPlusApi extends SharedPreferencesPlusApi {
   }
 
   @override
-  Future<Map<String, Object?>> getAll(SharedPreferencesPlusPigeonOptions options) async {
+  Future<Map<String, Object?>> getAll(
+    SharedPreferencesPlusPigeonOptions options,
+  ) async {
     _record(options);
     return allResult;
   }
 
   @override
-  Future<List<String>> getKeys(SharedPreferencesPlusPigeonOptions options) async {
+  Future<List<String>> getKeys(
+    SharedPreferencesPlusPigeonOptions options,
+  ) async {
     _record(options);
     return keysResult;
   }
 
   @override
-  Future<bool> containsKey(String key, SharedPreferencesPlusPigeonOptions options) async {
+  Future<bool> containsKey(
+    String key,
+    SharedPreferencesPlusPigeonOptions options,
+  ) async {
     _record(options);
     return containsKeyResult;
   }
