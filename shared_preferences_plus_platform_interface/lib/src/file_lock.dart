@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 
+import 'file_paths.dart';
+
 /// Locks an OS handle rather than a Dart advisory lock. flock locks distinct
 /// file descriptions, so separate isolates in the same process also serialize.
 /// Windows uses a handle opened without sharing. The OS releases either lock
@@ -37,26 +39,28 @@ class PreferencesFileLock {
             'CloseHandle',
           );
       final lastError = library
-          .lookupFunction<Uint32 Function(), int Function()>('GetLastError');
+          .lookupFunction<Uint32 Function(), int Function()>(
+            'GetLastError',
+            isLeaf: true,
+          );
+      // Resolve the FFI trampoline before CreateFileW sets thread-local error
+      // state. Lazy resolution of GetLastError can otherwise overwrite it.
+      lastError();
       // dart:io normalizes long Windows paths internally; direct Win32 calls
       // need the extended-length prefix explicitly, including for UNC paths.
-      final absolutePath = File(path).absolute.path;
-      final extendedPath = absolutePath.startsWith('\\\\?\\')
-          ? absolutePath
-          : absolutePath.startsWith('\\\\')
-          ? '\\\\?\\UNC\\${absolutePath.substring(2)}'
-          : '\\\\?\\$absolutePath';
-      final nativePath = extendedPath.toNativeUtf16();
+      final nativePath = nativeFileSystemPath(path).toNativeUtf16();
       try {
         while (true) {
           final handle = open(nativePath, 0xC0000000, 0, nullptr, 4, 0x80, 0);
+          final error = lastError();
           if (handle != -1) {
             return PreferencesFileLock._(() {
               close(handle);
             });
           }
-          final error = lastError();
-          if (error != 32 && error != 33) {
+          // A VM transition can still clear last-error state. Unknown failures
+          // retry within the same bounded timeout without acquiring the lock.
+          if (error != 0 && error != 32 && error != 33) {
             throw FileSystemException(
               'Unable to open preferences lock',
               path,

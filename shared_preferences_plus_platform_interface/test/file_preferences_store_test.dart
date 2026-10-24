@@ -13,8 +13,8 @@ Future<String> dartExecutable() async {
       p.join(directory.path, '.dart_tool', 'package_config.json'),
     );
     if (await config.exists()) {
-      final data =
-          jsonDecode(await config.readAsString()) as Map<String, dynamic>;
+      final contents = await config.readAsString();
+      final data = jsonDecode(contents) as Map<String, dynamic>;
       final flutter = (data['packages'] as List)
           .cast<Map<String, dynamic>>()
           .firstWhere((entry) => entry['name'] == 'flutter');
@@ -88,33 +88,42 @@ void main() {
     );
     expect((await store.read('concurrent')).length, 45);
   });
-  test('locks updates across independent processes', () async {
-    final packageRoot =
-        Directory.current.path.endsWith(
-          'shared_preferences_plus_platform_interface',
-        )
-        ? Directory.current
-        : Directory('shared_preferences_plus_platform_interface');
-    final worker = p.join(
-      packageRoot.absolute.path,
-      'tool',
-      'storage_worker.dart',
-    );
-    final results = await Future.wait(
-      List.generate(
-        3,
-        (i) async => Process.run(await dartExecutable(), [
-          worker,
-          directory.path,
-          'process$i',
-        ]),
-      ),
-    );
-    for (final result in results) {
-      expect(result.exitCode, 0, reason: '${result.stdout}\n${result.stderr}');
-    }
-    expect((await store.read('concurrent')).length, 45);
-  }, timeout: const Timeout(Duration(minutes: 2)));
+  test(
+    'locks updates across independent processes',
+    () async {
+      final packageRoot =
+          Directory.current.path.endsWith(
+            'shared_preferences_plus_platform_interface',
+          )
+          ? Directory.current
+          : Directory('shared_preferences_plus_platform_interface');
+      final worker = p.join(
+        packageRoot.absolute.path,
+        'tool',
+        'storage_worker.dart',
+      );
+      final results = await Future.wait(
+        List.generate(
+          3,
+          (i) async => Process.run(await dartExecutable(), [
+            worker,
+            directory.path,
+            'process$i',
+          ]),
+        ),
+      );
+      for (final result in results) {
+        expect(
+          result.exitCode,
+          0,
+          reason: '${result.stdout}\n${result.stderr}',
+        );
+      }
+      expect((await store.read('concurrent')).length, 45);
+    },
+    // Allow for cold Dart process startup on CI runners.
+    timeout: const Timeout(Duration(minutes: 2)),
+  );
   test(
     'times out without stealing an active lock and releases normally',
     () async {

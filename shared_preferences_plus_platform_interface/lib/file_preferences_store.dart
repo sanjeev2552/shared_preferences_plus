@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import 'preferences_codec.dart';
 import 'preferences_values.dart';
 import 'src/file_lock.dart';
+import 'src/file_paths.dart';
 import 'src/serial_executor.dart';
 
 /// Transactional JSON preferences shared by Linux and Windows.
@@ -120,8 +121,10 @@ class FilePreferencesStore {
   Future<void> _replace(File file, Map<String, Object?> values) async {
     final contents = PreferencesCodec.encode(copyPreferences(values));
     // Same-directory staging guarantees the rename stays on one filesystem.
+    // Unlike most dart:io operations, Windows createTemp passes its path
+    // directly to CreateDirectoryW and needs the extended-length prefix.
     final staging = await Directory(
-      p.dirname(file.path),
+      nativeFileSystemPath(p.dirname(file.path)),
     ).createTemp('.preferences-');
     final temporary = fileFactory(p.join(staging.path, 'values.json'));
     try {
